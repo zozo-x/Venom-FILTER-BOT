@@ -6,8 +6,9 @@ from pyrogram import Client, filters
 from pyrogram.enums import MessageMediaType
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, ForceReply
 
-async def refunc(client, message, new_name, reply_message):
+async def refunc(client, update, new_name, reply_message):
     try:
+        message = update.message
         media = await client.get_messages(message.chat.id, reply_message.id)
         file = media.reply_to_message.document or media.reply_to_message.video or media.reply_to_message.audio
         filename = file.file_name
@@ -24,7 +25,7 @@ async def refunc(client, message, new_name, reply_message):
                 new_name = new_name
             if "." in new_name:
                 new_name = new_name.replace(".", "")  
-            
+            await message.reply_to_message.delete()
             if mime == "video":
                 markup = InlineKeyboardMarkup([[
                     InlineKeyboardButton("📁 Document", callback_data="upload_document"),
