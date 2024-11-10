@@ -4,7 +4,7 @@
 
 from plugins.Extra.utils import progress_for_pyrogram, convert, humanbytes
 from pyrogram import Client, filters
-from plugins.Extra.rename import refunc
+from plugins.Extra.rename.filedetect import refunc
 from pyrogram.types import (  InlineKeyboardButton, InlineKeyboardMarkup,ForceReply)
 from hachoir.metadata import extractMetadata
 from hachoir.parser import createParser
@@ -32,8 +32,9 @@ async def rename(bot, update):
 	#await update.message.reply_text("__𝙿𝚕𝚎𝚊𝚜𝚎 𝙴𝚗𝚝𝚎𝚛 𝙽𝚎𝚠 𝙵𝚒𝚕𝚎𝙽𝚊𝚖𝚎...__",	
 	#reply_to_message_id=update.message.reply_to_message.id,  
 	#reply_markup=ForceReply(True))
-    await update.message.reply_text("__𝙿𝚕𝚎𝚊𝚜𝚎 𝙴𝚗𝚝𝚎𝚛 𝙽𝚎𝚠 𝙵𝚒𝚕𝚎𝙽𝚊𝚖𝚎...__")
-    msg = await bot.listen(update.from_user.id)
+        await update.message.reply_text("__𝙿𝚕𝚎𝚊𝚜𝚎 𝙴𝚗𝚝𝚎𝚛 𝙽𝚎𝚠 𝙵𝚒𝚕𝚎𝙽𝚊𝚖𝚎...__")
+        msg = await bot.listen(update.from_user.id)
+        await refunc(bot, update, msg.text, update.message.reply_to_message)
 	
 
 @Client.on_callback_query(filters.regex("upload"))
