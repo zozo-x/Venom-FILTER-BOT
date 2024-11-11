@@ -81,7 +81,7 @@ async def save_file(media):
         return False, 2
     else:
         if VJMedia == Media2:
-            check = Media.find_one(file)
+            check = Media.find(file)
             if check:
                 print(f"{file_name} is already saved.")
                 return False, 0
@@ -138,19 +138,26 @@ async def get_search_results(chat_id, query, file_type=None, max_results=10, off
     if file_type:
         filter['file_type'] = file_type
 
-    total_results = await Media.count_documents(filter)
+    result1 = await Media.count_documents(filter)
+    result2 = await Media2.count_documents(filter)
+    total_results = result1 + result2
     next_offset = offset + max_results
 
     if next_offset > total_results:
         next_offset = ''
 
-    cursor = Media.find(filter)
+    cursor1 = Media.find(filter)
+    cursor2 = Media2.find(filter)
     # Sort by recent
-    cursor.sort('$natural', -1)
+    cursor1.sort('$natural', -1)
+    cursor2.sort('$natural', -1)
     # Slice files according to offset and max results
-    cursor.skip(offset).limit(max_results)
+    cursor1.skip(offset).limit(max_results)
+    cursor2.skip(offset).limit(max_results)
     # Get list of files
-    files = await cursor.to_list(length=max_results)
+    files1 = await cursor1.to_list(length=max_results)
+    files2 = await cursor2.to_list(length=max_results)
+    files = files1 + files2
 
     return files, next_offset, total_results
 
@@ -181,20 +188,29 @@ async def get_bad_files(query, file_type=None, filter=False):
     if file_type:
         filter['file_type'] = file_type
 
-    total_results = await Media.count_documents(filter)
-
-    cursor = Media.find(filter)
+    result1 = await Media.count_documents(filter)
+    result2 = await Media2.count_documents(filter)
+    total_results = result1 + result2
+    
+    cursor1 = Media.find(filter)
+    cursor2 = Media2.find(filter)
     # Sort by recent
-    cursor.sort('$natural', -1)
+    cursor1.sort('$natural', -1)
+    cursor2.sort('$natural', -1)
     # Get list of files
-    files = await cursor.to_list(length=total_results)
-
+    files1 = await cursor1.to_list(length=max_results)
+    files2 = await cursor2.to_list(length=max_results)
+    files = files1 + files2
+    
     return files, total_results
 
 async def get_file_details(query):
     filter = {'file_id': query}
     cursor = Media.find(filter)
     filedetails = await cursor.to_list(length=1)
+    if not filedetails:
+        cursor1 = Media2.find(filter)
+        filedetails = await cursor1.to_list(length=1)
     return filedetails
 
 
