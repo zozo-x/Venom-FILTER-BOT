@@ -12,6 +12,7 @@
 <b>
   
 - [x] Clone Feature & On / Off
+- [x] Multiple Database Support & On / Off
 - [x] Premium Plan Feature 
 - [x] Refer To Get Premium
 - [x] Ai Spell Check 
@@ -19,7 +20,7 @@
 - [x] Rename Feature & On / Off
 - [x] Premium And Refer On / Off 
 - [x] Stream Feature On / Off 
-- [x] Url Shortner On / Off Feature 
+- [x] Url Shortner On / Off  
 - [x] Pm Search On / Off
 - [x] Request To Join Force Subscribe With Auto File Send 
 - [x] Custom Stream
@@ -27,7 +28,7 @@
 - [x] Language & Season & Quality & Episode & Year Choose Option
 - [x] Auto Approve & On / Off
 - [x] Custom Url Shortner Support
-- [x] Token Verification 
+- [x] Token Verification & On / Off
 - [x] Send All Button 
 - [x] Custom Tutorial Button
 - [x] Bot Pm File Auto Delete 
