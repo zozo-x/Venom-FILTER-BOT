@@ -12,8 +12,11 @@ logger.setLevel(logging.ERROR)
 
 myclient = pymongo.MongoClient(OTHER_DB_URI)
 mydb = myclient[DATABASE_NAME]
-mycol = mydb['CONNECTION']   
+mycol = mydb['CONNECTION'] 
 
+async def get_other_db_size():
+    data_size = (await mydb.command("dbstats"))['dataSize']
+    return data_size
 
 async def add_connection(group_id, user_id):
     query = mycol.find_one(
