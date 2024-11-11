@@ -25,7 +25,7 @@ async def refunc(client, update, new_name, reply_message):
                 new_name = new_name
             if "." in new_name:
                 new_name = new_name.replace(".", "")  
-            await message.reply_to_message.delete()
+         #   await message.reply_to_message.delete()
             if mime == "video":
                 markup = InlineKeyboardMarkup([[
                     InlineKeyboardButton("📁 Document", callback_data="upload_document"),
@@ -45,10 +45,10 @@ async def refunc(client, update, new_name, reply_message):
                 out_filename = new_name + "." + out_name
                 #    print(f"out name: {out_filename}")
             except:
-                await message.reply_to_message.delete()
+               # await message.reply_to_message.delete()
                 await message.reply_text("**Error** :  No  Extension in File, Not Supporting", reply_to_message_id=mg_id)
                 return
-            await message.reply_to_message.delete()
+          #  await message.reply_to_message.delete()
             if mime == "video":
                 markup = InlineKeyboardMarkup([[InlineKeyboardButton(
                     "📁 Document", callback_data="upload_document"), InlineKeyboardButton("🎥 Video", callback_data="upload_video")]])
