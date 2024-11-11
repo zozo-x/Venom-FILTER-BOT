@@ -8,18 +8,6 @@ import sys, glob, importlib, logging, logging.config, pytz, asyncio
 from pathlib import Path
 
 # Get logging configurations
-#logging.config.fileConfig('logging.conf')
-#logging.getLogger().setLevel(logging.INFO)
-#logging.getLogger("pyrogram").setLevel(logging.ERROR)
-#logging.getLogger("imdbpy").setLevel(logging.ERROR)
-#logging.basicConfig(
-#    level=logging.INFO,
-#    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-#)
-#logging.getLogger("aiohttp").setLevel(logging.ERROR)
-#logging.getLogger("aiohttp.web").setLevel(logging.ERROR)
-
-# Get logging configurations
 logging.config.fileConfig('logging.conf')
 logging.getLogger().setLevel(logging.INFO)
 logging.getLogger("pyrogram").setLevel(logging.ERROR)
