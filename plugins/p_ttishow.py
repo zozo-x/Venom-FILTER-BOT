@@ -176,7 +176,6 @@ async def get_ststs(bot, message):
         result = await sec_db.command("dbstats")
         file_size2 = get_size(result['dataSize'])
         result = await mydb.command("dbstats")
-        other_size = await get_other_db_size()
         other_size = get_size(result['dataSize'])
         await rju.edit(script.STATUS_TXT.format(total_users, totl_chats, size, files, file_size1, file_size2, other_size))
     except Exception as e:
