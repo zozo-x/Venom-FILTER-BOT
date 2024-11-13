@@ -171,11 +171,11 @@ async def get_ststs(bot, message):
         files = files1 + files2
         size = await db.get_db_size()
         size = get_size(size)
-        file_size1 = get_file_db_size()
-        file_size2 = get_file_db_size2()
+        file_size1 = await get_file_db_size()
+        file_size2 = await get_file_db_size2()
         file_size1 = get_size(file_size1)
         file_size2 = get_size(file_size2)
-        other_size = get_other_db_size()
+        other_size = await get_other_db_size()
         other_size = get_size(other_size)
         await rju.edit(script.STATUS_TXT.format(total_users, totl_chats, size, files, file_size1, file_size2, other_size))
     except Exception as e:
