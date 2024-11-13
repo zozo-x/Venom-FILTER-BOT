@@ -7,13 +7,13 @@ from Script import script
 from pyrogram import Client, filters, enums
 from pyrogram.errors import ChatAdminRequired, FloodWait
 from pyrogram.types import *
-from database.ia_filterdb import Media, Media2, get_file_details, unpack_new_file_id, get_bad_files, get_file_db_size, get_file_db_size2
+from database.ia_filterdb import Media, Media2, get_file_details, unpack_new_file_id, get_bad_files, get_file_db_size, db as vjdb, sec_db
 from database.users_chats_db import db, delete_all_referal_users, get_referal_users_count, get_referal_all_users, referal_add_user
 from database.join_reqs import JoinReqs
 from info import *
 from pyrogram.errors.exceptions.bad_request_400 import MessageTooLong, PeerIdInvalid
 from utils import get_settings, pub_is_subscribed, get_size, is_subscribed, save_group_settings, temp, verify_user, check_token, check_verification, get_token, get_shortlink, get_tutorial, get_seconds
-from database.connections_mdb import active_connection, get_other_db_size
+from database.connections_mdb import active_connection, mydb
 
 @Client.on_message(filters.new_chat_members & filters.group)
 async def save_group(bot, message):
@@ -171,12 +171,13 @@ async def get_ststs(bot, message):
         files = files1 + files2
         size = await db.get_db_size()
         size = get_size(size)
-        file_size1 = await get_file_db_size()
-        file_size2 = await get_file_db_size2()
-        file_size1 = get_size(file_size1)
-        file_size2 = get_size(file_size2)
+        result = await vjdb.command("dbstats")
+        file_size1 = get_size(result['dataSize'])
+        result = await sec_db.command("dbstats")
+        file_size2 = get_size(result['dataSize'])
+        result = await mydb.command("dbstats")
         other_size = await get_other_db_size()
-        other_size = get_size(other_size)
+        other_size = get_size(result['dataSize'])
         await rju.edit(script.STATUS_TXT.format(total_users, totl_chats, size, files, file_size1, file_size2, other_size))
     except Exception as e:
         await rju.edit(f"Error - {e}")
