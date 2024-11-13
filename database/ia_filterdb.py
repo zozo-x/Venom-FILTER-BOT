@@ -96,11 +96,13 @@ async def save_file(media):
             print(f"{file_name} is saved to database.")
             return True, 1
 
-def get_file_db_size():
-    return db.command("dbstats")['dataSize']
+async def get_file_db_size():
+    result = await db.command("dbstats")
+    return result['dataSize']
 
-def get_file_db_size2():
-    return sec_db.command("dbstats")['dataSize']
+async def get_file_db_size2():
+    result = await sec_db.command("dbstats")
+    return result['dataSize']
 
 async def get_search_results(chat_id, query, file_type=None, max_results=10, offset=0, filter=False):
     """For given query return (results, next_offset)"""
