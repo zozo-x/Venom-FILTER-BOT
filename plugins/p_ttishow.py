@@ -177,7 +177,7 @@ async def get_ststs(bot, message):
         other_size = await get_other_db_size()
         other_size = get_size(other_size)
         await rju.edit(script.STATUS_TXT.format(total_users, totl_chats, size, files, file_size1, file_size2, other_size))
-    except as e:
+    except Exception as e:
         await rju.edit(f"Error - {e}")
 
 @Client.on_message(filters.command('invite') & filters.user(ADMINS))
