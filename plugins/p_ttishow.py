@@ -7,7 +7,7 @@ from Script import script
 from pyrogram import Client, filters, enums
 from pyrogram.errors import ChatAdminRequired, FloodWait
 from pyrogram.types import *
-from database.ia_filterdb import Media, Media2, get_file_details, unpack_new_file_id, get_bad_files, get_file_db_size
+from database.ia_filterdb import Media, Media2, get_file_details, unpack_new_file_id, get_bad_files, get_file_db_size, get_file_db_size2
 from database.users_chats_db import db, delete_all_referal_users, get_referal_users_count, get_referal_all_users, referal_add_user
 from database.join_reqs import JoinReqs
 from info import *
@@ -171,7 +171,8 @@ async def get_ststs(bot, message):
         files = files1 + files2
         size = await db.get_db_size()
         size = get_size(size)
-        file_size1, file_size2 = await get_file_db_size()
+        file_size1 = await get_file_db_size()
+        file_size2 = await get_file_db_size2()
         file_size1 = get_size(file_size1)
         file_size2 = get_size(file_size2)
         other_size = await get_other_db_size()
