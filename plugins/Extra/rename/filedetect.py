@@ -6,15 +6,13 @@ from pyrogram import Client, filters
 from pyrogram.enums import MessageMediaType
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, ForceReply
 
-async def refunc(client, update, new_name, reply_message):
+async def refunc(client, message, new_name, reply_message):
     try:
-        message = update.message
         media = await client.get_messages(message.chat.id, reply_message.id)
         file = media.reply_to_message.document or media.reply_to_message.video or media.reply_to_message.audio
         filename = file.file_name
         types = file.mime_type.split("/")
         mime = types[0]
-        mg_id = media.reply_to_message.id
         try:
             if ".mp4" or ".mkv" in new_name:
                 if ".mp4" in new_name:
@@ -25,7 +23,6 @@ async def refunc(client, update, new_name, reply_message):
                 new_name = new_name
             if "." in new_name:
                 new_name = new_name.replace(".", "")  
-         #   await message.reply_to_message.delete()
             if mime == "video":
                 markup = InlineKeyboardMarkup([[
                     InlineKeyboardButton("📁 Document", callback_data="upload_document"),
@@ -36,19 +33,16 @@ async def refunc(client, update, new_name, reply_message):
             else:
                 markup = InlineKeyboardMarkup(
                     [[InlineKeyboardButton("📁 Document", callback_data="upload_document")]])
-            await message.reply_text(f"**Select the output file type**\n**🎞New Name** :- ```{out_filename}```", reply_to_message_id=mg_id, reply_markup=markup)
+            await message.reply_text(f"**Select the output file type**\n**🎞New Name** :- ```{out_filename}```", reply_markup=markup)
 
         except:
             try:
                 out = filename.split(".")
                 out_name = out[-1]
                 out_filename = new_name + "." + out_name
-                #    print(f"out name: {out_filename}")
             except:
-               # await message.reply_to_message.delete()
-                await message.reply_text("**Error** :  No  Extension in File, Not Supporting", reply_to_message_id=mg_id)
+                await message.reply_text("**Error** :  No  Extension in File, Not Supporting")
                 return
-          #  await message.reply_to_message.delete()
             if mime == "video":
                 markup = InlineKeyboardMarkup([[InlineKeyboardButton(
                     "📁 Document", callback_data="upload_document"), InlineKeyboardButton("🎥 Video", callback_data="upload_video")]])
@@ -58,7 +52,6 @@ async def refunc(client, update, new_name, reply_message):
             else:
                 markup = InlineKeyboardMarkup(
                     [[InlineKeyboardButton("📁 Document", callback_data="upload_document")]])
-            await message.reply_text(f"**Select the output file type**\n**🎞New Name ->** :- {out_filename}",
-                                    reply_to_message_id=mg_id, reply_markup=markup)
+            await message.reply_text(f"**Select the output file type**\n**🎞New Name ->** :- {out_filename}", reply_markup=markup)
     except Exception as e:
         print(f"error: {e}")
