@@ -15,7 +15,7 @@ mydb = myclient[DATABASE_NAME]
 mycol = mydb['CONNECTION'] 
 
 async def get_other_db_size():
-    result = await mydb.command("dbstats")
+    result = mydb.command("dbstats")
     return result['dataSize']
 
 async def add_connection(group_id, user_id):
