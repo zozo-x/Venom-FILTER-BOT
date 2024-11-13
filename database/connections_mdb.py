@@ -14,10 +14,6 @@ myclient = pymongo.MongoClient(OTHER_DB_URI)
 mydb = myclient[DATABASE_NAME]
 mycol = mydb['CONNECTION'] 
 
-async def get_other_db_size():
-    result = mydb.command("dbstats")
-    return result['dataSize']
-
 async def add_connection(group_id, user_id):
     query = mycol.find_one(
         { "_id": user_id },
