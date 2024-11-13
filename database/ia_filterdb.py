@@ -61,7 +61,7 @@ async def save_file(media):
     # TODO: Find better way to get same file_id for same media to avoid duplicates
     file_id, file_ref = unpack_new_file_id(media.file_id)
     file_name = re.sub(r"(_|\-|\.|\+)", " ", str(media.file_name))
-    data_size = (await db.command("dbstats"))['dataSize']
+    data_size = (db.command("dbstats"))['dataSize']
     if data_size > 503316480:
         VJMedia = Media2
     else:
@@ -96,11 +96,11 @@ async def save_file(media):
             print(f"{file_name} is saved to database.")
             return True, 1
 
-async def get_file_db_size():
-    return (await db.command("dbstats"))['dataSize']
+def get_file_db_size():
+    return (db.command("dbstats"))['dataSize']
 
-async def get_file_db_size2():
-    return (await sec_db.command("dbstats"))['dataSize']
+def get_file_db_size2():
+    return (sec_db.command("dbstats"))['dataSize']
 
 async def get_search_results(chat_id, query, file_type=None, max_results=10, offset=0, filter=False):
     """For given query return (results, next_offset)"""
