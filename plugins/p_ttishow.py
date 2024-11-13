@@ -163,19 +163,22 @@ async def re_enable_chat(bot, message):
 @Client.on_message(filters.command('stats') & filters.incoming)
 async def get_ststs(bot, message):
     rju = await message.reply('Fetching stats..')
-    total_users = await db.total_users_count()
-    totl_chats = await db.total_chat_count()
-    files1 = await Media.count_documents()
-    files2 = await Media2.count_documents()
-    files = files1 + files2
-    size = await db.get_db_size()
-    size = get_size(size)
-    file_size1, file_size2 = await get_file_db_size()
-    file_size1 = get_size(file_size1)
-    file_size2 = get_size(file_size2)
-    other_size = await get_other_db_size()
-    other_size = get_size(other_size)
-    await rju.edit(script.STATUS_TXT.format(total_users, totl_chats, size, files, file_size1, file_size2, other_size))
+    try:
+        total_users = await db.total_users_count()
+        totl_chats = await db.total_chat_count()
+        files1 = await Media.count_documents()
+        files2 = await Media2.count_documents()
+        files = files1 + files2
+        size = await db.get_db_size()
+        size = get_size(size)
+        file_size1, file_size2 = await get_file_db_size()
+        file_size1 = get_size(file_size1)
+        file_size2 = get_size(file_size2)
+        other_size = await get_other_db_size()
+        other_size = get_size(other_size)
+        await rju.edit(script.STATUS_TXT.format(total_users, totl_chats, size, files, file_size1, file_size2, other_size))
+    except as e:
+        await rju.edit(f"Error - {e}")
 
 @Client.on_message(filters.command('invite') & filters.user(ADMINS))
 async def gen_invite(bot, message):
