@@ -32,7 +32,7 @@ async def refunc(client, message, new_name, msg):
             else:
                 markup = InlineKeyboardMarkup(
                     [[InlineKeyboardButton("📁 Document", callback_data="upload_document")]])
-            await message.reply_text(f"**Select the output file type**\n**🎞New Name** :- ```{out_filename}```", reply_markup=markup)
+            await message.reply_text(f"**Select the output file type**\n**🎞New Name** :- ```{out_filename}```", reply_to_message_id=msg.id, reply_markup=markup)
 
         except:
             try:
@@ -51,6 +51,6 @@ async def refunc(client, message, new_name, msg):
             else:
                 markup = InlineKeyboardMarkup(
                     [[InlineKeyboardButton("📁 Document", callback_data="upload_document")]])
-            await message.reply_text(f"**Select the output file type**\n**🎞New Name ->** :- {out_filename}", reply_markup=markup)
+            await message.reply_text(f"**Select the output file type**\n**🎞New Name ->** :- {out_filename}", reply_to_message_id=msg.id, reply_markup=markup)
     except Exception as e:
         print(f"error: {e}")
