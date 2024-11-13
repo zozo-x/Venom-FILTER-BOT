@@ -11,7 +11,7 @@ from pymongo.errors import DuplicateKeyError
 from umongo import Instance, Document, fields
 from motor.motor_asyncio import AsyncIOMotorClient
 from marshmallow.exceptions import ValidationError
-from info import FILE_DB_URI, SEC_FILE_DB_URI, DATABASE_NAME, COLLECTION_NAME, USE_CAPTION_FILTER, MAX_B_TN
+from info import FILE_DB_URI, SEC_FILE_DB_URI, DATABASE_NAME, COLLECTION_NAME, MULTIPLE_DATABASE, USE_CAPTION_FILTER, MAX_B_TN
 from utils import get_settings, save_group_settings
 
 logger = logging.getLogger(__name__)
@@ -142,26 +142,41 @@ async def get_search_results(chat_id, query, file_type=None, max_results=10, off
     if file_type:
         filter['file_type'] = file_type
 
-    result1 = await Media.count_documents(filter)
-    result2 = await Media2.count_documents(filter)
-    total_results = result1 + result2
+    if MULTIPLE_DATABASE == True:
+        result1 = await Media.count_documents(filter)
+        result2 = await Media2.count_documents(filter)
+        total_results = result1 + result2
+    else:
+        total_results = await Media.count_documents(filter)
     next_offset = offset + max_results
 
     if next_offset > total_results:
         next_offset = ''
 
-    cursor1 = Media.find(filter)
-    cursor2 = Media2.find(filter)
+    if MULTIPLE_DATABASE == True:
+        cursor1 = Media.find(filter)
+        cursor2 = Media2.find(filter)
+    else:
+        cursor = Media.find(filter)
     # Sort by recent
-    cursor1.sort('$natural', -1)
-    cursor2.sort('$natural', -1)
+    if MULTIPLE_DATABASE == True:
+        cursor1.sort('$natural', -1)
+        cursor2.sort('$natural', -1)
+    else:
+        cursor.sort('$natural', -1)
     # Slice files according to offset and max results
-    cursor1.skip(offset).limit(max_results)
-    cursor2.skip(offset).limit(max_results)
+    if MULTIPLE_DATABASE == True:
+        cursor1.skip(offset).limit(max_results)
+        cursor2.skip(offset).limit(max_results)
+    else:
+        cursor.skip(offset).limit(max_results)
     # Get list of files
-    files1 = await cursor1.to_list(length=max_results)
-    files2 = await cursor2.to_list(length=max_results)
-    files = files1 + files2
+    if MULTIPLE_DATABASE == True:
+        files1 = await cursor1.to_list(length=max_results)
+        files2 = await cursor2.to_list(length=max_results)
+        files = files1 + files2
+    else:
+        files = await cursor.to_list(length=max_results)
 
     return files, next_offset, total_results
 
@@ -192,19 +207,31 @@ async def get_bad_files(query, file_type=None, filter=False):
     if file_type:
         filter['file_type'] = file_type
 
-    result1 = await Media.count_documents(filter)
-    result2 = await Media2.count_documents(filter)
-    total_results = result1 + result2
+    if MULTIPLE_DATABASE == True:
+        result1 = await Media.count_documents(filter)
+        result2 = await Media2.count_documents(filter)
+        total_results = result1 + result2
+    else:
+        total_results = await Media.count_documents(filter)
     
-    cursor1 = Media.find(filter)
-    cursor2 = Media2.find(filter)
+    if MULTIPLE_DATABASE == True:
+        cursor1 = Media.find(filter)
+        cursor2 = Media2.find(filter)
+    else:
+        cursor = Media.find(filter)
     # Sort by recent
-    cursor1.sort('$natural', -1)
-    cursor2.sort('$natural', -1)
+    if MULTIPLE_DATABASE == True:
+        cursor1.sort('$natural', -1)
+        cursor2.sort('$natural', -1)
+    else:
+        cursor.sort('$natural', -1)
     # Get list of files
-    files1 = await cursor1.to_list(length=max_results)
-    files2 = await cursor2.to_list(length=max_results)
-    files = files1 + files2
+    if MULTIPLE_DATABASE == True:
+        files1 = await cursor1.to_list(length=max_results)
+        files2 = await cursor2.to_list(length=max_results)
+        files = files1 + files2
+    else:
+        files = await cursor.to_list(length=max_results)
     
     return files, total_results
 
