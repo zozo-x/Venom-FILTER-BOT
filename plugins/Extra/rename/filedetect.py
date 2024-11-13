@@ -6,10 +6,9 @@ from pyrogram import Client, filters
 from pyrogram.enums import MessageMediaType
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, ForceReply
 
-async def refunc(client, message, new_name, reply_message):
+async def refunc(client, message, new_name, msg):
     try:
-        media = await client.get_messages(message.chat.id, reply_message.id)
-        file = media.reply_to_message.document or media.reply_to_message.video or media.reply_to_message.audio
+        file = getattr(msg, msg.media.value)
         filename = file.file_name
         types = file.mime_type.split("/")
         mime = types[0]
