@@ -7,7 +7,7 @@ from Script import script
 from pyrogram import Client, filters, enums
 from pyrogram.errors import ChatAdminRequired, FloodWait
 from pyrogram.types import *
-from database.ia_filterdb import get_file_details, unpack_new_file_id, get_bad_files
+from database.ia_filterdb import col, get_file_details, unpack_new_file_id, get_bad_files
 from database.users_chats_db import db, delete_all_referal_users, get_referal_users_count, get_referal_all_users, referal_add_user
 from database.join_reqs import JoinReqs
 from info import CLONE_MODE, CHANNELS, REQUEST_TO_JOIN_MODE, TRY_AGAIN_BTN, ADMINS, SHORTLINK_MODE, PREMIUM_AND_REFERAL_MODE, STREAM_MODE, AUTH_CHANNEL, OWNER_USERNAME, REFERAL_PREMEIUM_TIME, REFERAL_COUNT, PAYMENT_TEXT, PAYMENT_QR, LOG_CHANNEL, PICS, BATCH_FILE_CAPTION, CUSTOM_FILE_CAPTION, PROTECT_CONTENT, CHNL_LNK, GRP_LNK, REQST_CHANNEL, SUPPORT_CHAT_ID, SUPPORT_CHAT, MAX_B_TN, VERIFY, SHORTLINK_API, SHORTLINK_URL, TUTORIAL, VERIFY_TUTORIAL, IS_TUTORIAL, URL
@@ -707,14 +707,14 @@ async def delete(bot, message):
     
     file_id, file_ref = unpack_new_file_id(media.file_id)
 
-    result = await Media.collection.delete_one({
+    result = await col.delete_one({
         '_id': file_id,
     })
     if result.deleted_count:
         await msg.edit('File is successfully deleted from database')
     else:
         file_name = re.sub(r"(_|\-|\.|\+)", " ", str(media.file_name))
-        result = await Media.collection.delete_many({
+        result = await col.delete_many({
             'file_name': file_name,
             'file_size': media.file_size,
             'mime_type': media.mime_type
@@ -724,7 +724,7 @@ async def delete(bot, message):
         else:
             # files indexed before https://github.com/EvamariaTG/EvaMaria/commit/f3d2a1bcb155faf44178e5d7a685a1b533e714bf#diff-86b613edf1748372103e94cacff3b578b36b698ef9c16817bb98fe9ef22fb669R39 
             # have original file name.
-            result = await Media.collection.delete_many({
+            result = await col.delete_many({
                 'file_name': media.file_name,
                 'file_size': media.file_size,
                 'mime_type': media.mime_type
@@ -759,7 +759,7 @@ async def delete_all_index(bot, message):
 
 @Client.on_callback_query(filters.regex(r'^autofilter_delete'))
 async def delete_all_index_confirm(bot, message):
-    await Media.collection.drop()
+    await col.drop()
     await message.answer('Piracy Is Crime')
     await message.message.edit('Succesfully Deleted All The Indexed Files.')
 
