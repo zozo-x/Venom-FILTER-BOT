@@ -39,12 +39,9 @@ async def save_file(media):
         VJMedia = col
     file = {
         'file_id': file_id,
-        'file_ref': file_ref,
         'file_name': file_name,
         'file_size': media.file_size,
-        'file_type': media.file_type,
-        'mime_type': media.mime_type,
-        'caption': media.caption.html if media.caption else None,
+        'caption': media.caption.html if media.caption else None
     }
     if VJMedia == sec_col:
         found = {'file_id': file_id}
