@@ -168,13 +168,13 @@ async def get_ststs(bot, message):
         totl_chats = await db.total_chat_count()
         filesp = col.count_documents({})
         totalsec = sec_col.count_documents({})
-        stats = await vjdb.command('dbStats')
+        stats = vjdb.command('dbStats')
         used_dbSize = (stats['dataSize']/(1024*1024))+(stats['indexSize']/(1024*1024))
         free_dbSize = 512-used_dbSize
-        stats2 = await sec_db.command('dbStats')
+        stats2 = sec_db.command('dbStats')
         used_dbSize2 = (stats2['dataSize']/(1024*1024))+(stats2['indexSize']/(1024*1024))
         free_dbSize2 = 512-used_dbSize2
-        stats3 = await mydb.command('dbStats')
+        stats3 = mydb.command('dbStats')
         used_dbSize3 = (stats3['dataSize']/(1024*1024))+(stats3['indexSize']/(1024*1024))
         free_dbSize3 = 512-used_dbSize3
         await rju.edit(script.STATUS_TXT.format((int(filesp)+int(totalsec)), total_users, totl_chats, filesp, round(used_dbSize, 2), round(free_dbSize, 2), totalsec, round(used_dbSize2, 2), round(free_dbSize2, 2), round(used_dbSize3, 2), round(free_dbSize3, 2)))
