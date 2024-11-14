@@ -14,7 +14,6 @@ logging.getLogger("pyrogram").setLevel(logging.ERROR)
 logging.getLogger("cinemagoer").setLevel(logging.ERROR)
 
 from pyrogram import Client, idle
-from database.ia_filterdb import Media, Media2
 from database.users_chats_db import db
 from info import *
 from utils import temp
@@ -56,8 +55,6 @@ async def start():
     b_users, b_chats = await db.get_banned()
     temp.BANNED_USERS = b_users
     temp.BANNED_CHATS = b_chats
-    await Media.ensure_indexes()
-    await Media2.ensure_indexes()
     me = await TechVJBot.get_me()
     temp.BOT = TechVJBot
     temp.ME = me.id
