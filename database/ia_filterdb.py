@@ -36,7 +36,7 @@ async def save_file(media):
     result = db.command('dbstats')
     data_size = result['dataSize']
     if data_size > 503316480:
-        found = {'file_id': file_id}
+        found = {'file_id': media.file_id}
         check = col.find_one(found)
         if check:
             print(f"{file_name} is already saved.")
