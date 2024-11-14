@@ -758,10 +758,10 @@ async def delete_all_index(bot, message):
 
 
 @Client.on_callback_query(filters.regex(r'^autofilter_delete'))
-async def delete_all_index_confirm(bot, message):
-    await col.drop()
+async def delete_all_index_confirm(bot, query):
+    col.drop()
     await message.answer('Piracy Is Crime')
-    await message.message.edit('Succesfully Deleted All The Indexed Files.')
+    await query.message.edit('Succesfully Deleted All The Indexed Files.')
 
 
 @Client.on_message(filters.command('settings'))
