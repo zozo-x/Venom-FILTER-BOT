@@ -7,10 +7,8 @@ from struct import pack
 import re
 import base64
 from pyrogram.file_id import FileId
+from pymongo import MongoClient
 from pymongo.errors import DuplicateKeyError
-from umongo import Instance, Document, fields
-from motor.motor_asyncio import AsyncIOMotorClient
-from marshmallow.exceptions import ValidationError
 from info import FILE_DB_URI, SEC_FILE_DB_URI, DATABASE_NAME, COLLECTION_NAME, MULTIPLE_DATABASE, USE_CAPTION_FILTER, MAX_B_TN
 from utils import get_settings, save_group_settings
 
@@ -18,41 +16,13 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
 
-client = AsyncIOMotorClient(FILE_DB_URI)
+client = MongoClient(FILE_DB_URI)
 db = client[DATABASE_NAME]
-instance = Instance.from_db(db)
+col = db[COLLECTION_NAME]
 
-@instance.register
-class Media(Document):
-    file_id = fields.StrField(attribute='_id')
-    file_ref = fields.StrField(allow_none=True)
-    file_name = fields.StrField(required=True)
-    file_size = fields.IntField(required=True)
-    file_type = fields.StrField(allow_none=True)
-    mime_type = fields.StrField(allow_none=True)
-    caption = fields.StrField(allow_none=True)
-
-    class Meta:
-        indexes = ('$file_name', )
-        collection_name = COLLECTION_NAME
-
-sec_client = AsyncIOMotorClient(SEC_FILE_DB_URI)
+sec_client = MongoClient(SEC_FILE_DB_URI)
 sec_db = sec_client[DATABASE_NAME]
-sec_instance = Instance.from_db(sec_db)
-
-@sec_instance.register
-class Media2(Document):
-    file_id = fields.StrField(attribute='_id')
-    file_ref = fields.StrField(allow_none=True)
-    file_name = fields.StrField(required=True)
-    file_size = fields.IntField(required=True)
-    file_type = fields.StrField(allow_none=True)
-    mime_type = fields.StrField(allow_none=True)
-    caption = fields.StrField(allow_none=True)
-
-    class Meta:
-        indexes = ('$file_name', )
-        collection_name = COLLECTION_NAME
+sec_col = sec_db[COLLECTION_NAME]
 
 
 async def save_file(media):
@@ -64,38 +34,29 @@ async def save_file(media):
     result = await db.command("dbstats")
     data_size = result['dataSize']
     if data_size > 503316480:
-        VJMedia = Media2
+        VJMedia = sec_col
     else:
-        VJMedia = Media
-    try:
-        file = VJMedia(
-            file_id=file_id,
-            file_ref=file_ref,
-            file_name=file_name,
-            file_size=media.file_size,
-            file_type=media.file_type,
-            mime_type=media.mime_type,
-            caption=media.caption.html if media.caption else None,
-        )
-    except ValidationError:
-        logger.exception('Error occurred while saving file in database')
-        return False, 2
-    else:
-        if VJMedia == Media2:
-            found = {'file_id': file_id}
-            check = Media.find_one(found)
-            if check:
-                print(f"{file_name} is already saved.")
-                return False, 0
-                
-        try:
-            await file.commit()
-        except DuplicateKeyError:      
+        VJMedia = col
+    file = {
+        'file_id': file_id,
+        'file_ref': file_ref,
+        'file_name': file_name,
+        'file_size': media.file_size,
+        'file_type': media.file_type,
+        'mime_type': media.mime_type,
+        'caption': media.caption.html if media.caption else None,
+    }
+    if VJMedia == sec_col:
+        found = {'file_id': file_id}
+        check = col.find_one(found)
+        if check:
             print(f"{file_name} is already saved.")
             return False, 0
-        else:
-            print(f"{file_name} is saved to database.")
-            return True, 1
+    try:
+        VJMedia.insert_one(file)
+    except DuplicateKeyError:      
+        print(f"{file_name} is already saved.")
+        return False, 0
 
 async def get_search_results(chat_id, query, file_type=None, max_results=10, offset=0, filter=False):
     """For given query return (results, next_offset)"""
@@ -139,27 +100,21 @@ async def get_search_results(chat_id, query, file_type=None, max_results=10, off
         filter['file_type'] = file_type
 
     if MULTIPLE_DATABASE == True:
-        result1 = await Media.count_documents(filter)
-        result2 = await Media2.count_documents(filter)
+        result1 = await col.count_documents(filter)
+        result2 = await sec_col.count_documents(filter)
         total_results = result1 + result2
     else:
-        total_results = await Media.count_documents(filter)
+        total_results = await col.count_documents(filter)
     next_offset = offset + max_results
 
     if next_offset > total_results:
         next_offset = ''
 
     if MULTIPLE_DATABASE == True:
-        cursor1 = Media.find(filter)
-        cursor2 = Media2.find(filter)
+        cursor1 = col.find(filter)
+        cursor2 = sec_col.find(filter)
     else:
-        cursor = Media.find(filter)
-    # Sort by recent
-    if MULTIPLE_DATABASE == True:
-        cursor1.sort('$natural', -1)
-        cursor2.sort('$natural', -1)
-    else:
-        cursor.sort('$natural', -1)
+        cursor = col.find(filter)
     # Slice files according to offset and max results
     if MULTIPLE_DATABASE == True:
         cursor1.skip(offset).limit(max_results)
@@ -168,11 +123,11 @@ async def get_search_results(chat_id, query, file_type=None, max_results=10, off
         cursor.skip(offset).limit(max_results)
     # Get list of files
     if MULTIPLE_DATABASE == True:
-        files1 = await cursor1.to_list(length=max_results)
-        files2 = await cursor2.to_list(length=max_results)
+        files1 = list(cursor1)
+        files2 = list(cursor2)
         files = files1 + files2
     else:
-        files = await cursor.to_list(length=max_results)
+        files = list(cursor)
 
     return files, next_offset, total_results
 
@@ -204,40 +159,32 @@ async def get_bad_files(query, file_type=None, filter=False):
         filter['file_type'] = file_type
 
     if MULTIPLE_DATABASE == True:
-        result1 = await Media.count_documents(filter)
-        result2 = await Media2.count_documents(filter)
+        result1 = await col.count_documents(filter)
+        result2 = await sec_col.count_documents(filter)
         total_results = result1 + result2
     else:
-        total_results = await Media.count_documents(filter)
+        total_results = await col.count_documents(filter)
     
     if MULTIPLE_DATABASE == True:
-        cursor1 = Media.find(filter)
-        cursor2 = Media2.find(filter)
+        cursor1 = col.find(filter)
+        cursor2 = sec_col.find(filter)
     else:
-        cursor = Media.find(filter)
-    # Sort by recent
-    if MULTIPLE_DATABASE == True:
-        cursor1.sort('$natural', -1)
-        cursor2.sort('$natural', -1)
-    else:
-        cursor.sort('$natural', -1)
+        cursor = col.find(filter)
     # Get list of files
     if MULTIPLE_DATABASE == True:
-        files1 = await cursor1.to_list(length=max_results)
-        files2 = await cursor2.to_list(length=max_results)
+        files1 = list(cursor1)
+        files2 = list(cursor2)
         files = files1 + files2
     else:
-        files = await cursor.to_list(length=max_results)
+        files = list(cursor)
     
     return files, total_results
 
 async def get_file_details(query):
     filter = {'file_id': query}
-    cursor = Media.find(filter)
-    filedetails = await cursor.to_list(length=1)
+    filedetails = col.find_one(filter)
     if not filedetails:
-        cursor1 = Media2.find(filter)
-        filedetails = await cursor1.to_list(length=1)
+        filedetails = sec_col.find_one(filter)
     return filedetails
 
 
