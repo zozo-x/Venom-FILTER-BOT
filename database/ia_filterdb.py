@@ -26,34 +26,33 @@ sec_col = sec_db[COLLECTION_NAME]
 
 
 async def save_file(media):
-    """Save file in database"""
-
-    # TODO: Find better way to get same file_id for same media to avoid duplicates
-    file_id, file_ref = unpack_new_file_id(media.file_id)
     file_name = re.sub(r"(_|\-|\.|\+)", " ", str(media.file_name))
-    result = db.command('dbstats')
-    data_size = result['dataSize']
-    if data_size > 503316480:
-        VJMedia = sec_col
-    else:
-        VJMedia = col
     file = {
-        'file_id': file_id,
+        'file_id': media.file_id,
         'file_name': file_name,
         'file_size': media.file_size,
         'caption': media.caption.html if media.caption else None
     }
-    if VJMedia == sec_col:
+    result = db.command('dbstats')
+    data_size = result['dataSize']
+    if data_size > 503316480:
         found = {'file_id': file_id}
         check = col.find_one(found)
         if check:
             print(f"{file_name} is already saved.")
             return False, 0
-    try:
-        VJMedia.insert_one(file)
-    except DuplicateKeyError:      
-        print(f"{file_name} is already saved.")
-        return False, 0
+        else:
+            try:
+                sec_col.insert_one(file)
+            except DuplicateKeyError:      
+                print(f"{file_name} is already saved.")
+                return False, 0
+    else:
+        try:
+            col.insert_one(file)
+        except DuplicateKeyError:      
+            print(f"{file_name} is already saved.")
+            return False, 0
 
 async def get_search_results(chat_id, query, file_type=None, max_results=10, offset=0, filter=False):
     """For given query return (results, next_offset)"""
