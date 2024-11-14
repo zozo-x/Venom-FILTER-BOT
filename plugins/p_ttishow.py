@@ -166,18 +166,18 @@ async def get_ststs(bot, message):
     try:
         total_users = await db.total_users_count()
         totl_chats = await db.total_chat_count()
-        files1 = await Media.count_documents()
-        files2 = await Media2.count_documents()
-        files = files1 + files2
-        size = await db.get_db_size()
-        size = get_size(size)
-        result = vjdb.command("dbstats")
-        file_size1 = get_size(result['dataSize'])
-        result = sec_db.command("dbstats")
-        file_size2 = get_size(result['dataSize'])
-        result = mydb.command("dbstats")
-        other_size = get_size(result['dataSize'])
-        await rju.edit(script.STATUS_TXT.format(total_users, totl_chats, size, files, file_size1, file_size2, other_size))
+        filesp = await Media.count_documents()
+        totalsec = await Media2.count_documents()
+        stats = await vjdb.command('dbStats')
+        used_dbSize = (stats['dataSize']/(1024*1024))+(stats['indexSize']/(1024*1024))
+        free_dbSize = 512-used_dbSize
+        stats2 = await sec_db.command('dbStats')
+        used_dbSize2 = (stats2['dataSize']/(1024*1024))+(stats2['indexSize']/(1024*1024))
+        free_dbSize2 = 512-used_dbSize2
+        stats3 = await mydb.command('dbStats')
+        used_dbSize3 = (stats3['dataSize']/(1024*1024))+(stats3['indexSize']/(1024*1024))
+        free_dbSize3 = 512-used_dbSize3
+        await rju.edit(script.STATUS_TXT.format((int(filesp)+int(totalsec)), total_users, totl_chats, filesp, round(used_dbSize, 2), round(free_dbSize, 2), totalsec, round(used_dbSize2, 2), round(free_dbSize2, 2), round(used_dbSize3, 2), round(free_dbSize3, 2)))
     except Exception as e:
         await rju.edit(f"Error - {e}")
 
