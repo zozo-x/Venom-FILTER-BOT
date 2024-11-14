@@ -100,11 +100,11 @@ async def get_search_results(chat_id, query, file_type=None, max_results=10, off
         filter['file_type'] = file_type
 
     if MULTIPLE_DATABASE == True:
-        result1 = await col.count_documents(filter)
-        result2 = await sec_col.count_documents(filter)
+        result1 = col.count_documents(filter)
+        result2 = sec_col.count_documents(filter)
         total_results = result1 + result2
     else:
-        total_results = await col.count_documents(filter)
+        total_results = col.count_documents(filter)
     next_offset = offset + max_results
 
     if next_offset > total_results:
@@ -159,11 +159,11 @@ async def get_bad_files(query, file_type=None, filter=False):
         filter['file_type'] = file_type
 
     if MULTIPLE_DATABASE == True:
-        result1 = await col.count_documents(filter)
-        result2 = await sec_col.count_documents(filter)
+        result1 = col.count_documents(filter)
+        result2 = sec_col.count_documents(filter)
         total_results = result1 + result2
     else:
-        total_results = await col.count_documents(filter)
+        total_results = col.count_documents(filter)
     
     if MULTIPLE_DATABASE == True:
         cursor1 = col.find(filter)
