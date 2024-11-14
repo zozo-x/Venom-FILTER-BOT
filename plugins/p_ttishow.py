@@ -166,8 +166,8 @@ async def get_ststs(bot, message):
     try:
         total_users = await db.total_users_count()
         totl_chats = await db.total_chat_count()
-        filesp = await col.count_documents()
-        totalsec = await sec_col.count_documents()
+        filesp = col.count_documents()
+        totalsec = sec_col.count_documents()
         stats = await vjdb.command('dbStats')
         used_dbSize = (stats['dataSize']/(1024*1024))+(stats['indexSize']/(1024*1024))
         free_dbSize = 512-used_dbSize
