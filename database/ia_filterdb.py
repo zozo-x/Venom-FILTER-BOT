@@ -27,11 +27,12 @@ sec_col = sec_db[COLLECTION_NAME]
 
 async def save_file(media):
     """Save file in database"""
-    
+
+    file_id, file_ref = unpack_new_file_id(media.file_id)
     file_name = re.sub(r"(_|\-|\.|\+)", " ", str(media.file_name))
     file = {
         '_id': media.file_unique_id,
-        'file_id': media.file_id,
+        'file_id': file_id,
         'file_name': file_name,
         'file_size': media.file_size,
         'caption': media.caption.html if media.caption else None
@@ -39,7 +40,7 @@ async def save_file(media):
     result = db.command('dbstats')
     data_size = result['dataSize']
     if data_size > 503316480:
-        found = {'file_id': media.file_id}
+        found = {'file_id': file_id}
         check = col.find_one(found)
         if check:
             print(f"{file_name} is already saved.")
