@@ -54,13 +54,10 @@ async def next_page(bot, query):
         offset = int(offset)
     except:
         offset = 0
-    if BUTTONS.get(key)!=None:
-        search = BUTTONS.get(key)
-    else:
-        search = FRESH.get(key)
-    if not search:
-        await query.answer(script.OLD_ALRT_TXT.format(query.from_user.first_name),show_alert=True)
-        return
+    search = FRESH.get(key)
+  #  if not search:
+     #   await query.answer(script.OLD_ALRT_TXT.format(query.from_user.first_name),show_alert=True)
+    #    return
 
     files, n_offset, total = await get_search_results(query.message.chat.id, search, offset=offset, filter=True)
     try:
@@ -75,7 +72,7 @@ async def next_page(bot, query):
     btn = [
         [
             InlineKeyboardButton(
-                text=f"[{get_size(filevj.file_size)}] {' '.join(filter(lambda x: not x.startswith('[') and not x.startswith('@') and not x.startswith('www.'), filevj.file_name.split()))}", callback_data=f'file#{filevj.file_id}'
+                text=f"[{get_size(filevj['file_size'])}] {' '.join(filter(lambda x: not x.startswith('[') and not x.startswith('@') and not x.startswith('www.'), filevj['file_name'].split()))}", callback_data=f"file#{filevj['file_id']}"
             ),
         ]
         for filevj in files
@@ -225,7 +222,7 @@ async def filter_yearss_cb_handler(client: Client, query: CallbackQuery):
     btn = [
         [
             InlineKeyboardButton(
-                text=f"[{get_size(filevj.file_size)}] {' '.join(filter(lambda x: not x.startswith('[') and not x.startswith('@') and not x.startswith('www.'), filevj.file_name.split()))}", callback_data=f'file#{filevj.file_id}'
+                text=f"[{get_size(filevj['file_size'])}] {' '.join(filter(lambda x: not x.startswith('[') and not x.startswith('@') and not x.startswith('www.'), filevj['file_name'].split()))}", callback_data=f"file#{filevj['file_id']}"
             ),
         ]
         for filevj in files
@@ -337,7 +334,7 @@ async def filter_episodes_cb_handler(client: Client, query: CallbackQuery):
     btn = [
         [
             InlineKeyboardButton(
-                text=f"[{get_size(filevj.file_size)}] {' '.join(filter(lambda x: not x.startswith('[') and not x.startswith('@') and not x.startswith('www.'), filevj.file_name.split()))}", callback_data=f'file#{filevj.file_id}'
+                text=f"[{get_size(filevj['file_size'])}] {' '.join(filter(lambda x: not x.startswith('[') and not x.startswith('@') and not x.startswith('www.'), filevj['file_name'].split()))}", callback_data=f"file#{filevj['file_id']}"
             ),
         ]
         for filevj in files
@@ -451,7 +448,7 @@ async def filter_languages_cb_handler(client: Client, query: CallbackQuery):
     btn = [
         [
             InlineKeyboardButton(
-                text=f"[{get_size(filevj.file_size)}] {' '.join(filter(lambda x: not x.startswith('[') and not x.startswith('@') and not x.startswith('www.'), filevj.file_name.split()))}", callback_data=f'file#{filevj.file_id}'
+                text=f"[{get_size(filevj['file_size'])}] {' '.join(filter(lambda x: not x.startswith('[') and not x.startswith('@') and not x.startswith('www.'), filevj['file_name'].split()))}", callback_data=f"file#{filevj['file_id']}"
             ),
         ]
         for filevj in files
@@ -592,7 +589,7 @@ async def filter_seasons_cb_handler(client: Client, query: CallbackQuery):
     btn = [
         [
             InlineKeyboardButton(
-                text=f"[{get_size(filevj.file_size)}] {' '.join(filter(lambda x: not x.startswith('[') and not x.startswith('@') and not x.startswith('www.'), filevj.file_name.split()))}", callback_data=f'file#{filevj.file_id}'
+                text=f"[{get_size(filevj['file_size'])}] {' '.join(filter(lambda x: not x.startswith('[') and not x.startswith('@') and not x.startswith('www.'), filevj['file_name'].split()))}", callback_data=f"file#{filevj['file_id']}"
             ),
         ]
         for filevj in files
@@ -700,7 +697,7 @@ async def filter_qualities_cb_handler(client: Client, query: CallbackQuery):
     btn = [
         [
             InlineKeyboardButton(
-                text=f"⚜️[{get_size(filevj.file_size)}] {' '.join(filter(lambda x: not x.startswith('[') and not x.startswith('@') and not x.startswith('www.'), filevj.file_name.split()))}", callback_data=f'file#{filevj.file_id}'
+                text=f"⚜️[{get_size(filevj['file_size'])}] {' '.join(filter(lambda x: not x.startswith('[') and not x.startswith('@') and not x.startswith('www.'), filevj['file_name'].split()))}", callback_data=f"file#{filevj['file_id']}"
             ),
         ]
         for filevj in files
@@ -782,12 +779,12 @@ async def cb_handler(client: Client, query: CallbackQuery):
         files_ = await get_file_details(file_id)
         if not files_:
             return await query.answer('Nᴏ sᴜᴄʜ ғɪʟᴇ ᴇxɪsᴛ.')
-        files = files_[0]
-        title = files.file_name
-        size = get_size(files.file_size)
-        f_caption = files.caption
+        files = files_
+        title = files['file_name']
+        size = get_size(files['file_size'])
+        f_caption = files['caption']
         if f_caption is None:
-            f_caption = f"{files.file_name}"
+            f_caption = f"{files['file_name']}"
 
         try:
             if settings['url']:
@@ -845,13 +842,10 @@ async def cb_handler(client: Client, query: CallbackQuery):
         
     elif query.data.startswith("send_fall"):
         temp_var, ident, key, offset = query.data.split("#")
-        if BUTTONS.get(key)!=None:
-            search = BUTTONS.get(key)
-        else:
-            search = FRESH.get(key)
-        if not search:
-            await query.answer(script.OLD_ALRT_TXT.format(query.from_user.first_name),show_alert=True)
-            return
+        search = FRESH.get(key)
+       # if not search:
+        #    await query.answer(script.OLD_ALRT_TXT.format(query.from_user.first_name),show_alert=True)
+           # return
         files, n_offset, total = await get_search_results(query.message.chat.id, search, offset=int(offset), filter=True)
         await send_all(client, query.from_user.id, files, ident, query.message.chat.id, query.from_user.first_name, query)
         await query.answer(f"Hey {query.from_user.first_name}, All files on this page has been sent successfully to your PM !", show_alert=True)
@@ -897,7 +891,7 @@ async def auto_filter(client, name, msg, reply_msg, ai_search, spoll=False):
     btn = [
         [
             InlineKeyboardButton(
-                text=f"[{get_size(filevj.file_size)}] {' '.join(filter(lambda x: not x.startswith('[') and not x.startswith('@') and not x.startswith('www.'), filevj.file_name.split()))}", callback_data=f'file#{filevj.file_id}'
+                text=f"[{get_size(filevj['file_size'])}] {' '.join(filter(lambda x: not x.startswith('[') and not x.startswith('@') and not x.startswith('www.'), filevj['file_name'].split()))}", callback_data=f"file#{filevj['file_id']}"
             ),
         ]
         for filevj in files
