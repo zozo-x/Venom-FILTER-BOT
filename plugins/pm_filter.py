@@ -843,7 +843,7 @@ async def filter_seasons_cb_handler(client: Client, query: CallbackQuery):
     search1 = f"{search1} {seas1}"
     BUTTONS1[key] = search1
     files1, _, _ = await get_search_results(chat_id, search1, max_results=10)
-    files1 = [file for file in files1 if re.search(seas1, file.file_name, re.IGNORECASE)]
+    files1 = [file for file in files1 if re.search(seas1, file["file_name"], re.IGNORECASE)]
     
     if files1:
         files.extend(files1)
@@ -852,7 +852,7 @@ async def filter_seasons_cb_handler(client: Client, query: CallbackQuery):
     search2 = f"{search2} {seas2}"
     BUTTONS2[key] = search2
     files2, _, _ = await get_search_results(chat_id, search2, max_results=10)
-    files2 = [file for file in files2 if re.search(seas2, file.file_name, re.IGNORECASE)]
+    files2 = [file for file in files2 if re.search(seas2, file["file_name"], re.IGNORECASE)]
 
     if files2:
         files.extend(files2)
@@ -994,7 +994,7 @@ async def filter_qualities_cb_handler(client: Client, query: CallbackQuery):
     BUTTONS[key] = search
 
     files, offset, total_results = await get_search_results(chat_id, search, offset=0, filter=True)
-    # files = [file for file in files if re.search(lang, file.file_name, re.IGNORECASE)]
+    # files = [file for file in files if re.search(lang, file["file_name"], re.IGNORECASE)]
     if not files:
         await query.answer("🚫 𝗡𝗼 𝗙𝗶𝗹𝗲 𝗪𝗲𝗿𝗲 𝗙𝗼𝘂𝗻𝗱 🚫", show_alert=1)
         return
