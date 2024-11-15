@@ -1,4 +1,5 @@
-pyrofork==2.3.45
+pyrofork==2.3.43
+https://codeload.github.com/KurimuzonAkuma/pyrogram/zip/refs/heads/dev
 tgcrypto 
 requests 
 bs4 
