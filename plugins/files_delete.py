@@ -24,11 +24,11 @@ async def deletemultiplemedia(bot, message):
     file_id, file_ref = unpack_new_file_id(media.file_id)
 
     result = col.delete_one({
-        '_id': file_id,
+        'file_id': file_id,
     })
     if not result.deleted_count:
         result = sec_col.delete_one({
-            '_id': file_id,
+            'file_id': file_id,
         })
     if result.deleted_count:
         logger.info('File is successfully deleted from database.')
