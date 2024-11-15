@@ -1320,7 +1320,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
         files_ = await get_file_details(file_id)
         if not files_:
             return await query.answer('Nᴏ sᴜᴄʜ ғɪʟᴇ ᴇxɪsᴛ.')
-        files = files_[0]
+        files = files_
         title = files["file_name"]
         size = get_size(files["file_size"])
         f_caption = files["caption"]
@@ -1420,7 +1420,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
         files_ = await get_file_details(file_id)
         if not files_:
             return await query.answer('Nᴏ sᴜᴄʜ ғɪʟᴇ ᴇxɪsᴛ.')
-        files = files_[0]
+        files = files
         title = files.file_name
         size = get_size(files.file_size)
         f_caption = files.caption
@@ -1486,9 +1486,9 @@ async def cb_handler(client: Client, query: CallbackQuery):
         async with lock:
             try:
                 for file in files:
-                    file_ids = file.file_id
-                    file_name = file.file_name
-                    result = await Media.collection.delete_one({
+                    file_ids = file["file_id"]
+                    file_name = file["file_name"]
+                    result = col.delete_one({
                         '_id': file_ids,
                     })
                     if result.deleted_count:
