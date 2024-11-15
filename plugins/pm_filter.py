@@ -2762,7 +2762,6 @@ async def auto_filter(client, name, msg, reply_msg, ai_search, spoll=False):
         await msg.message.delete()
     pre = 'filep' if settings['file_secure'] else 'file'
     key = f"{message.chat.id}-{message.id}"
-    FRESH[key] = search
     temp.GETALL[key] = files
     temp.SHORT[message.from_user.id] = message.chat.id
     if settings["button"]:
@@ -2802,6 +2801,7 @@ async def auto_filter(client, name, msg, reply_msg, ai_search, spoll=False):
         ])
     if offset != "":
         req = message.from_user.id if message.from_user else 0
+        FRESH[key] = search
         try:
             if settings['max_btn']:
                 btn.append(
