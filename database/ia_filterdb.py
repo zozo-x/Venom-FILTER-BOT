@@ -75,9 +75,9 @@ async def get_search_results(chat_id, query, file_type=None, max_results=10, off
             else:
                 max_results = int(MAX_B_TN)
     query = query.strip()
-    if filter:  # For better results
-        query = query.replace(' ', r'(\s|\.|\+|\-|_)')
-        raw_pattern = r'(\s|_|\-|\.|\+)' + query + r'(\s|_|\-|\.|\+)'
+   # if filter:  # For better results
+ #       query = query.replace(' ', r'(\s|\.|\+|\-|_)')
+  #      raw_pattern = r'(\s|_|\-|\.|\+)' + query + r'(\s|_|\-|\.|\+)'
     if not query:
         raw_pattern = '.'
     elif ' ' not in query:
