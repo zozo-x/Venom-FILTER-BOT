@@ -53,8 +53,11 @@ async def index_files(bot, query):
 
 @Client.on_message(filters.private & filters.command('index'))
 async def send_for_index(bot, message):
-    vj = await bot.ask(message.chat.id, "**Now Send Me Your Channel Last Post Link Or Forward A Last Message From Your Index Channel.**")
-    if vj.text:
+    vj = await bot.ask(message.chat.id, "**Now Send Me Your Channel Last Post Link Or Forward A Last Message From Your Index Channel.\n\nAnd You Can Set Skip Number By - /setskip yourskipnumber**")
+    if vj.forward_from_chat.type == enums.ChatType.CHANNEL:
+        last_msg_id = vj.forward_from_message_id
+        chat_id = vj.forward_from_chat.username or vj.forward_from_chat.id
+    elif vj.text:
         regex = re.compile("(https://)?(t\.me/|telegram\.me/|telegram\.dog/)(c/)?(\d+|[a-zA-Z_0-9]+)/(\d+)$")
         match = regex.match(vj.text)
         if not match:
@@ -63,9 +66,6 @@ async def send_for_index(bot, message):
         last_msg_id = int(match.group(5))
         if chat_id.isnumeric():
             chat_id  = int(("-100" + chat_id))
-    elif vj.forward_from_chat.type == enums.ChatType.CHANNEL:
-        last_msg_id = vj.forward_from_message_id
-        chat_id = vj.forward_from_chat.username or vj.forward_from_chat.id
     else:
         return
     try:
@@ -153,7 +153,7 @@ async def index_files_to_db(lst_msg_id, chat, msg, bot):
                     await msg.edit(f"Successfully Cancelled!!\n\nSaved <code>{total_files}</code> files to dataBase!\nDuplicate Files Skipped: <code>{duplicate}</code>\nDeleted Messages Skipped: <code>{deleted}</code>\nNon-Media messages skipped: <code>{no_media + unsupported}</code>(Unsupported Media - `{unsupported}` )\nErrors Occurred: <code>{errors}</code>")
                     break
                 current += 1
-                if current % 40 == 0:
+                if current % 50 == 0:
                     can = [[InlineKeyboardButton('Cancel', callback_data='index_cancel')]]
                     reply = InlineKeyboardMarkup(can)
                     await msg.edit_text(
