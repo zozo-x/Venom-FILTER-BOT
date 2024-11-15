@@ -196,9 +196,7 @@ Edit info.py with variables as given below then run bot
 
 ## Note 🏷️
  
-* [![Contact Developer](https://img.shields.io/static/v1?label=Contact+Developer&message=On+Telegram&color=critical)](https://telegram.me/KingVJ01)
-
-<b>[Note To A So Called Dev](https://telegram.dog/vj_botz): 
+[![Contact Developer](https://img.shields.io/static/v1?label=Contact+Developer&message=On+Telegram&color=critical)](https://telegram.me/KingVJ01) 
 
 Fork The Repo And Edit As Per Your Needs.</b>
 
