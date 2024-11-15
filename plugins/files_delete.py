@@ -23,14 +23,14 @@ async def deletemultiplemedia(bot, message):
 
     file_id, file_ref = unpack_new_file_id(media.file_id)
 
-    result = await col.delete_one({
+    result = col.delete_one({
         '_id': file_id,
     })
     if result.deleted_count:
         logger.info('File is successfully deleted from database.')
     else:
         file_name = re.sub(r"(_|\-|\.|\+)", " ", str(media.file_name))
-        result = await col.delete_many({
+        result = col.delete_many({
             'file_name': file_name,
             'file_size': media.file_size,
             'mime_type': media.mime_type
@@ -38,7 +38,7 @@ async def deletemultiplemedia(bot, message):
         if result.deleted_count:
             logger.info('File is successfully deleted from database.')
         else:
-            result = await col.delete_many({
+            result = col.delete_many({
                 'file_name': media.file_name,
                 'file_size': media.file_size,
                 'mime_type': media.mime_type
