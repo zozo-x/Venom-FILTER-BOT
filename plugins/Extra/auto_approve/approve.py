@@ -134,7 +134,7 @@ async def auto_approve(client, message: ChatJoinRequest):
             chat_id = temp.SHORT.get(user)
             settings = await get_settings(chat_id)
             files_ = await get_file_details(file_id)
-            files = files_[0]
+            files = files_
             g = await get_shortlink(chat_id, f"https://telegram.me/{temp.U_NAME}?start=file_{file_id}")
             button = [[
                 InlineKeyboardButton('📂 Dᴏᴡɴʟᴏᴀᴅ Nᴏᴡ 📂', url=g)
@@ -154,7 +154,7 @@ async def auto_approve(client, message: ChatJoinRequest):
             for file in files:
                 file_id = file.file_id
                 files_ = await get_file_details(file_id)
-                files1 = files_[0]
+                files1 = files_
                 title = ' '.join(filter(lambda x: not x.startswith('[') and not x.startswith('@'), files1["file_name"].split()))
                 size=get_size(files1["file_size"])
                 f_caption=files1.caption
@@ -296,8 +296,8 @@ async def auto_approve(client, message: ChatJoinRequest):
             except:
                 pass
             return await message.reply('No such file exist.')
-        files = files_[0]
-        title = '@VJ_Bots  ' + ' '.join(filter(lambda x: not x.startswith('[') and not x.startswith('@'), files["file_name"].split()))
+        files = files_
+        title = '@VJ_Bots' + ' '.join(filter(lambda x: not x.startswith('[') and not x.startswith('@'), files["file_name"].split()))
         size=get_size(files["file_size"])
         f_caption=files.caption
         if CUSTOM_FILE_CAPTION:
