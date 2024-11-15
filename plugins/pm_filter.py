@@ -279,7 +279,10 @@ async def years_cb_handler(client: Client, query: CallbackQuery):
         pass
     _, key = query.data.split("#")
     search = FRESH.get(key)
-    search = search.replace(' ', '_')
+    try:
+        search = search.replace(' ', '_')
+    except:
+        pass
     btn = []
     for i in range(0, len(YEARS)-1, 4):
         row = []
@@ -313,7 +316,10 @@ async def filter_yearss_cb_handler(client: Client, query: CallbackQuery):
     _, lang, key = query.data.split("#")
     curr_time = datetime.now(pytz.timezone('Asia/Kolkata')).time()
     search = FRESH.get(key)
-    search = search.replace("_", " ")
+    try:
+        search = search.replace(' ', '_')
+    except:
+        pass
     baal = lang in search
     if baal:
         search = search.replace(lang, "")
@@ -431,7 +437,10 @@ async def episodes_cb_handler(client: Client, query: CallbackQuery):
         pass
     _, key = query.data.split("#")
     search = FRESH.get(key)
-    search = search.replace(' ', '_')
+    try:
+        search = search.replace(' ', '_')
+    except:
+        pass
     btn = []
     for i in range(0, len(EPISODES)-1, 4):
         row = []
@@ -465,7 +474,10 @@ async def filter_episodes_cb_handler(client: Client, query: CallbackQuery):
     _, lang, key = query.data.split("#")
     curr_time = datetime.now(pytz.timezone('Asia/Kolkata')).time()
     search = FRESH.get(key)
-    search = search.replace("_", " ")
+    try:
+        search = search.replace(' ', '_')
+    except:
+        pass
     baal = lang in search
     if baal:
         search = search.replace(lang, "")
@@ -585,7 +597,10 @@ async def languages_cb_handler(client: Client, query: CallbackQuery):
         pass
     _, key = query.data.split("#")
     search = FRESH.get(key)
-    search = search.replace(' ', '_')
+    try:
+        search = search.replace(' ', '_')
+    except:
+        pass
     btn = []
     for i in range(0, len(LANGUAGES)-1, 2):
         btn.append([
@@ -619,7 +634,10 @@ async def filter_languages_cb_handler(client: Client, query: CallbackQuery):
     _, lang, key = query.data.split("#")
     curr_time = datetime.now(pytz.timezone('Asia/Kolkata')).time()
     search = FRESH.get(key)
-    search = search.replace("_", " ")
+    try:
+        search = search.replace(' ', '_')
+    except:
+        pass
     baal = lang in search
     if baal:
         search = search.replace(lang, "")
@@ -739,7 +757,10 @@ async def seasons_cb_handler(client: Client, query: CallbackQuery):
     _, key = query.data.split("#")
     search = FRESH.get(key)
     BUTTONS[key] = None
-    search = search.replace(' ', '_')
+    try:
+        search = search.replace(' ', '_')
+    except:
+        pass
     btn = []
     for i in range(0, len(SEASONS)-1, 2):
         btn.append([
@@ -773,7 +794,10 @@ async def filter_seasons_cb_handler(client: Client, query: CallbackQuery):
     _, seas, key = query.data.split("#")
     curr_time = datetime.now(pytz.timezone('Asia/Kolkata')).time()
     search = FRESH.get(key)
-    search = search.replace("_", " ")
+    try:
+        search = search.replace(' ', '_')
+    except:
+        pass
     sea = ""
     season_search = ["s01","s02", "s03", "s04", "s05", "s06", "s07", "s08", "s09", "s10", "season 01","season 02","season 03","season 04","season 05","season 06","season 07","season 08","season 09","season 10", "season 1","season 2","season 3","season 4","season 5","season 6","season 7","season 8","season 9"]
     for x in range (len(season_search)):
@@ -905,7 +929,10 @@ async def qualities_cb_handler(client: Client, query: CallbackQuery):
         pass
     _, key = query.data.split("#")
     search = FRESH.get(key)
-    search = search.replace(' ', '_')
+    try:
+        search = search.replace(' ', '_')
+    except:
+        pass
     btn = []
     for i in range(0, len(QUALITIES)-1, 2):
         btn.append([
@@ -938,7 +965,10 @@ async def qualities_cb_handler(client: Client, query: CallbackQuery):
 async def filter_qualities_cb_handler(client: Client, query: CallbackQuery):
     _, qual, key = query.data.split("#")
     search = FRESH.get(key)
-    search = search.replace("_", " ")
+    try:
+        search = search.replace(' ', '_')
+    except:
+        pass
     baal = qual in search
     if baal:
         search = search.replace(qual, "")
@@ -2775,6 +2805,8 @@ async def auto_filter(client, name, msg, reply_msg, ai_search, spoll=False):
         await msg.message.delete()
     pre = 'filep' if settings['file_secure'] else 'file'
     key = f"{message.chat.id}-{message.id}"
+    req = message.from_user.id if message.from_user else 0
+    FRESH[key] = search
     temp.GETALL[key] = files
     temp.SHORT[message.from_user.id] = message.chat.id
     if settings["button"]:
@@ -2813,8 +2845,6 @@ async def auto_filter(client, name, msg, reply_msg, ai_search, spoll=False):
             InlineKeyboardButton("ʏᴇᴀʀs", callback_data=f"years#{key}")
         ])
     if offset != "":
-        req = message.from_user.id if message.from_user else 0
-        FRESH[key] = search
         try:
             if settings['max_btn']:
                 btn.append(
