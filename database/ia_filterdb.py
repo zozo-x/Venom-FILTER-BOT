@@ -47,12 +47,16 @@ async def save_file(media):
         else:
             try:
                 sec_col.insert_one(file)
+                print(f"{file_name} is successfully saved.")
+                return True, 1
             except DuplicateKeyError:      
                 print(f"{file_name} is already saved.")
                 return False, 0
     else:
         try:
             col.insert_one(file)
+            print(f"{file_name} is successfully saved.")
+            return True, 1
         except DuplicateKeyError:      
             print(f"{file_name} is already saved.")
             return False, 0
