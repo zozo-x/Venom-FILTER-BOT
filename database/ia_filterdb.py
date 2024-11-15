@@ -26,8 +26,11 @@ sec_col = sec_db[COLLECTION_NAME]
 
 
 async def save_file(media):
+    """Save file in database"""
+    
     file_name = re.sub(r"(_|\-|\.|\+)", " ", str(media.file_name))
     file = {
+        '_id': media.file_unique_id,
         'file_id': media.file_id,
         'file_name': file_name,
         'file_size': media.file_size,
