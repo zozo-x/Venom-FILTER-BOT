@@ -708,16 +708,24 @@ async def delete(bot, message):
     file_id, file_ref = unpack_new_file_id(media.file_id)
 
     result = col.delete_one({
-        '_id': file_id,
+        'file_id': file_id,
     })
+    if not result.deleted_count:
+        result = sec_col.delete_one({
+            'file_id': file_id,
+        })
     if result.deleted_count:
         await msg.edit('File is successfully deleted from database')
     else:
         file_name = re.sub(r"(_|\-|\.|\+)", " ", str(media.file_name))
         result = col.delete_many({
             'file_name': file_name,
-            'file_size': media.file_size,
-            'mime_type': media.mime_type
+            'file_size': media.file_size
+        })
+        if not result.deleted_count:
+            result = sec_col.delete_many({
+                'file_name': file_name,
+                'file_size': media.file_size
             })
         if result.deleted_count:
             await msg.edit('File is successfully deleted from database')
@@ -726,9 +734,13 @@ async def delete(bot, message):
             # have original file name.
             result = col.delete_many({
                 'file_name': media.file_name,
-                'file_size': media.file_size,
-                'mime_type': media.mime_type
+                'file_size': media.file_size
             })
+            if not result.deleted_count:
+                result = sec_col.delete_many({
+                    'file_name': file_name,
+                    'file_size': media.file_size
+                })
             if result.deleted_count:
                 await msg.edit('File is successfully deleted from database')
             else:
@@ -760,6 +772,7 @@ async def delete_all_index(bot, message):
 @Client.on_callback_query(filters.regex(r'^autofilter_delete'))
 async def delete_all_index_confirm(bot, query):
     col.drop()
+    sec_col.drop()
     await query.answer('Piracy Is Crime')
     await query.message.edit('Succesfully Deleted All The Indexed Files.')
 
