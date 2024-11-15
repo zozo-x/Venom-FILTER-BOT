@@ -127,7 +127,7 @@ Join My <a href='https://telegram.dog/vj_botz'>Update Channel</a> For More Updat
 <details><summary><b>Deploy To Heroku</b></summary>
 <p>
 <br>
-First Connect Your GitHub Account Then Select Repo And Deploy With Procfile.
+<b>First Connect Your GitHub Account Then Select Repo And Deploy With Procfile.</b>
 </p>
 </details>
 
