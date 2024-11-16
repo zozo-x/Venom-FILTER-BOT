@@ -6,6 +6,7 @@ import logging
 from struct import pack
 import re
 import base64
+import json
 from pyrogram.file_id import FileId
 from pymongo import MongoClient
 from pymongo.errors import DuplicateKeyError
@@ -30,21 +31,31 @@ async def save_file(media):
 
     file_id, file_ref = unpack_new_file_id(media.file_id)
     file_name = re.sub(r"(_|\-|\.|\+)", " ", str(media.file_name))
+    
+    unwanted_chars = ['[', ']', '(', ')']
+    for char in unwanted_chars:
+        file_name = file_name.replace(char, '')
+
+    file_name = ' '.join(filter(lambda x: not x.startswith('@'), file_name.split()))
+    
     found1 = {'file_name': file_name}
     check = col.find_one(found1)
     if check:
         print(f"{file_name} is already saved.")
         return False, 0
+        
     check2 = sec_col.find_one(found1)
     if check2:
         print(f"{file_name} is already saved.")
         return False, 0
+        
     file = {
         'file_id': file_id,
         'file_name': file_name,
         'file_size': media.file_size,
         'caption': media.caption.html if media.caption else None
     }
+    
     result = db.command('dbstats')
     data_size = result['dataSize']
     if data_size > 503316480:
@@ -159,9 +170,6 @@ async def get_bad_files(query, file_type=None, filter=False):
         filter = {'$or': [{'file_name': regex}, {'caption': regex}]}
     else:
         filter = {'file_name': regex}
-
-    if file_type:
-        filter['file_type'] = file_type
 
     if MULTIPLE_DATABASE == True:
         result1 = col.count_documents(filter)
