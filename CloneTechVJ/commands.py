@@ -9,7 +9,7 @@ from Script import script
 from pyrogram import Client, filters, enums
 from pyrogram.errors import ChatAdminRequired, FloodWait
 from pyrogram.types import *
-from database.ia_filterdb import get_file_details, unpack_new_file_id, get_bad_files
+from database.ia_filterdb import col, sec_col, get_file_details, unpack_new_file_id, get_bad_files
 from database.users_chats_db import db
 from CloneTechVJ.database.clone_bot_userdb import clonedb
 from info import *
@@ -272,5 +272,7 @@ async def reset_settings(client, message):
 async def stats(client, message):
     me = await client.get_me()
     total_users = await clonedb.total_users_count(me.id)
-    total = await Media.count_documents()
+    filesp = col.count_documents({})
+    totalsec = sec_col.count_documents({})
+    total = int(filesp) + int(totalsec)
     await message.reply(f"**Total Files : {total}\n\nTotal Users : {total_users}**")
