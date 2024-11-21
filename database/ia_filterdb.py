@@ -118,35 +118,35 @@ async def get_search_results(chat_id, query, file_type=None, max_results=10, off
     else:
         filter = {'file_name': regex}
 
-    if MULTIPLE_DATABASE == True:
-        result1 = col.count_documents(filter)
-        result2 = sec_col.count_documents(filter)
-        total_results = result1 + result2
-    else:
-        total_results = col.count_documents(filter)
-    next_offset = offset + max_results
-
-    if next_offset > total_results:
-        next_offset = ""
-
+#    if MULTIPLE_DATABASE == True:
+#        result1 = col.count_documents(filter)
+#        result2 = sec_col.count_documents(filter)
+#        total_results = result1 + result2
+#    else:
+#        total_results = col.count_documents(filter)
+    
     if MULTIPLE_DATABASE == True:
         cursor1 = col.find(filter)
         cursor2 = sec_col.find(filter)
     else:
         cursor = col.find(filter)
-    # Slice files according to offset and max results
+        
     if MULTIPLE_DATABASE == True:
-        cursor1.skip(offset).limit(max_results)
-        cursor2.skip(offset).limit(max_results)
+        files1 = [file for file in cursor1]
+        files2 = [file for file in cursor2]
+        files_ = files1 + files2
+        files = files_[offset:][:max_results]
+        total_results = len(files_)
+        next_offset = offset + max_results
+        if next_offset >= total_results:
+            next_offset = ""
     else:
-        cursor.skip(offset).limit(max_results)
-    # Get list of files
-    if MULTIPLE_DATABASE == True:
-        files1 = list(cursor1)
-        files2 = list(cursor2)
-        files = files1 + files2
-    else:
-        files = list(cursor)
+        files_ = [file for file in cursor]
+        files = files_[offset:][:max_results]
+        total_results = len(files_)
+        next_offset = offset + max_results
+        if next_offset >= total_results:
+            next_offset = ""
 
     return files, next_offset, total_results
 
