@@ -6,7 +6,7 @@ import re
 from pymongo.errors import DuplicateKeyError
 import motor.motor_asyncio
 from pymongo import MongoClient
-from info import DATABASE_NAME, USER_DB_URI, OTHER_DB_URI, CUSTOM_FILE_CAPTION, IMDB, IMDB_TEMPLATE, MELCOW_NEW_USERS, P_TTI_SHOW_OFF, SINGLE_BUTTON, SPELL_CHECK_REPLY, PROTECT_CONTENT, AUTO_DELETE, MAX_BTN, AUTO_FFILTER, SHORTLINK_API, SHORTLINK_URL, IS_SHORTLINK, TUTORIAL, IS_TUTORIAL
+from info import DATABASE_NAME, USER_DB_URI, OTHER_DB_URI, CUSTOM_FILE_CAPTION, IMDB, IMDB_TEMPLATE, MELCOW_NEW_USERS, P_TTI_SHOW_OFF, BUTTON_MODE, SPELL_CHECK_REPLY, PROTECT_CONTENT, AUTO_DELETE, MAX_BTN, AUTO_FFILTER, SHORTLINK_API, SHORTLINK_URL, IS_SHORTLINK, TUTORIAL, IS_TUTORIAL
 import time
 import datetime
 
@@ -38,7 +38,7 @@ async def delete_all_referal_users(user_id):
     user_db.delete_many({}) 
 
 default_setgs = {
-    'button': SINGLE_BUTTON,
+    'button': BUTTON_MODE,
     'botpm': P_TTI_SHOW_OFF,
     'file_secure': PROTECT_CONTENT,
     'imdb': IMDB,
