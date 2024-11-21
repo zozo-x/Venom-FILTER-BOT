@@ -1028,6 +1028,16 @@ async def settings(client, message):
                     callback_data=f'setgs#max_btn#{settings["max_btn"]}#{grp_id}',
                 ),
             ],
+            [
+                InlineKeyboardButton(
+                    'ShortLink',
+                    callback_data=f'setgs#is_shortlink#{settings["is_shortlink"]}#{grp_id}',
+                ),
+                InlineKeyboardButton(
+                    '✔ Oɴ' if settings["is_shortlink"] else '✘ Oғғ',
+                    callback_data=f'setgs#is_shortlink#{settings["is_shortlink"]}#{grp_id}',
+                ),
+            ],
         ]
     if settings is not None:
         btn = [[
@@ -1234,8 +1244,6 @@ async def deletemultiplefiles(bot, message):
 
 @Client.on_message(filters.command("shortlink"))
 async def shortlink(bot, message):
-    if SHORTLINK_MODE == False:
-        return 
     userid = message.from_user.id if message.from_user else None
     if not userid:
         return await message.reply(f"You are anonymous admin. Turn off anonymous admin and try again this command")
@@ -1268,8 +1276,6 @@ async def shortlink(bot, message):
     
 @Client.on_message(filters.command("setshortlinkoff"))
 async def offshortlink(bot, message):
-    if SHORTLINK_MODE == False:
-        return 
     chat_type = message.chat.type
     if chat_type == enums.ChatType.PRIVATE:
         return await message.reply_text("I will Work Only in group")
@@ -1278,14 +1284,18 @@ async def offshortlink(bot, message):
         title = message.chat.title
     else:
         return
+    userid = message.from_user.id
+    user = await bot.get_chat_member(grpid, userid)
+    if user.status != enums.ChatMemberStatus.ADMINISTRATOR and user.status != enums.ChatMemberStatus.OWNER and str(userid) not in ADMINS:
+        return await message.reply_text("<b>You don't have access to use this command!\n\nAdd Me to Your Own Group as Admin and Try This Command\n\nFor More PM Me With This Command</b>")
+    else:
+        pass
     await save_group_settings(grpid, 'is_shortlink', False)
     # ENABLE_SHORTLINK = False
     return await message.reply_text("Successfully disabled shortlink")
     
 @Client.on_message(filters.command("setshortlinkon"))
 async def onshortlink(bot, message):
-    if SHORTLINK_MODE == False:
-        return 
     chat_type = message.chat.type
     if chat_type == enums.ChatType.PRIVATE:
         return await message.reply_text("I will Work Only in group")
@@ -1294,14 +1304,18 @@ async def onshortlink(bot, message):
         title = message.chat.title
     else:
         return
+    userid = message.from_user.id
+    user = await bot.get_chat_member(grpid, userid)
+    if user.status != enums.ChatMemberStatus.ADMINISTRATOR and user.status != enums.ChatMemberStatus.OWNER and str(userid) not in ADMINS:
+        return await message.reply_text("<b>You don't have access to use this command!\n\nAdd Me to Your Own Group as Admin and Try This Command\n\nFor More PM Me With This Command</b>")
+    else:
+        pass
     await save_group_settings(grpid, 'is_shortlink', True)
     # ENABLE_SHORTLINK = True
     return await message.reply_text("Successfully enabled shortlink")
 
 @Client.on_message(filters.command("shortlink_info"))
 async def showshortlink(bot, message):
-    if SHORTLINK_MODE == False:
-        return 
     userid = message.from_user.id if message.from_user else None
     if not userid:
         return await message.reply(f"You are anonymous admin. Turn off anonymous admin and try again this command")
@@ -1338,8 +1352,6 @@ async def showshortlink(bot, message):
 
 @Client.on_message(filters.command("set_tutorial"))
 async def settutorial(bot, message):
-    if SHORTLINK_MODE == False:
-        return 
     userid = message.from_user.id if message.from_user else None
     if not userid:
         return await message.reply(f"You are anonymous admin. Turn off anonymous admin and try again this command")
@@ -1370,8 +1382,6 @@ async def settutorial(bot, message):
 
 @Client.on_message(filters.command("remove_tutorial"))
 async def removetutorial(bot, message):
-    if SHORTLINK_MODE == False:
-        return 
     userid = message.from_user.id if message.from_user else None
     if not userid:
         return await message.reply(f"You are anonymous admin. Turn off anonymous admin and try again this command")
