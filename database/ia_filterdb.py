@@ -30,43 +30,46 @@ async def save_file(media):
     """Save file in database"""
 
     file_id, file_ref = unpack_new_file_id(media.file_id)
-    file_name = re.sub(r"(_|\-|\.|\+)", " ", str(media.file_name))
-    
+    file_name = re.sub(r"(_|\-|\.|\+)", " ", str(media.file_name)) 
     unwanted_chars = ['[', ']', '(', ')']
     for char in unwanted_chars:
         file_name = file_name.replace(char, '')
-
     file_name = ' '.join(filter(lambda x: not x.startswith('@'), file_name.split()))
-    
-    found1 = {'file_name': file_name}
-    check = col.find_one(found1)
-    if check:
-        print(f"{file_name} is already saved.")
-        return False, 0
-        
-    check2 = sec_col.find_one(found1)
-    if check2:
-        print(f"{file_name} is already saved.")
-        return False, 0
-        
     file = {
         'file_id': file_id,
         'file_name': file_name,
         'file_size': media.file_size,
         'caption': media.caption.html if media.caption else None
     }
-    
-    result = db.command('dbstats')
-    data_size = result['dataSize']
-    if data_size > 503316480:
-        found = {'file_id': file_id}
-        check = col.find_one(found)
-        if check:
+    if MULTIPLE_DATABASE == True:
+        found1 = {'file_name': file_name}
+        check1 = col.find_one(found1)
+        if check1:
             print(f"{file_name} is already saved.")
             return False, 0
+        check2 = sec_col.find_one(found1)
+        if check2:
+            print(f"{file_name} is already saved.")
+            return False, 0
+        result = db.command('dbstats')
+        data_size = result['dataSize']
+        if data_size > 503316480:
+            found = {'file_id': file_id}
+            check = col.find_one(found)
+            if check:
+                print(f"{file_name} is already saved.")
+                return False, 0
+            else:
+                try:
+                    sec_col.insert_one(file)
+                    print(f"{file_name} is successfully saved.")
+                    return True, 1
+                except DuplicateKeyError:      
+                    print(f"{file_name} is already saved.")
+                    return False, 0
         else:
             try:
-                sec_col.insert_one(file)
+                col.insert_one(file)
                 print(f"{file_name} is successfully saved.")
                 return True, 1
             except DuplicateKeyError:      
