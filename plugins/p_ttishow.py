@@ -167,10 +167,15 @@ async def get_ststs(bot, message):
         total_users = await db.total_users_count()
         totl_chats = await db.total_chat_count()
         filesp = col.count_documents({})
-        totalsec = sec_col.count_documents({})
         stats = vjdb.command('dbStats')
         used_dbSize = (stats['dataSize']/(1024*1024))+(stats['indexSize']/(1024*1024))
         free_dbSize = 512-used_dbSize
+        
+        if MULTIPLE_DATABASE == False:
+            await rju.edit(script.SEC_STATUS_TXT.format(total_users, totl_chats, filesp, round(used_dbSize, 2), round(free_dbSize, 2)))
+            return 
+            
+        totalsec = sec_col.count_documents({})   
         stats2 = sec_db.command('dbStats')
         used_dbSize2 = (stats2['dataSize']/(1024*1024))+(stats2['indexSize']/(1024*1024))
         free_dbSize2 = 512-used_dbSize2
