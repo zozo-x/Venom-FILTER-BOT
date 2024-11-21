@@ -8,7 +8,7 @@ from info import DELETE_CHANNELS
 from database.ia_filterdb import col, sec_col, unpack_new_file_id
 
 logger = logging.getLogger(__name__)
-media_filter = filters.document | filters.video | filters.audio
+media_filter = filters.document | filters.video
 
 @Client.on_message(filters.chat(DELETE_CHANNELS) & media_filter)
 async def deletemultiplemedia(bot, message):
@@ -34,6 +34,11 @@ async def deletemultiplemedia(bot, message):
         logger.info('File is successfully deleted from database.')
     else:
         file_name = re.sub(r"(_|\-|\.|\+)", " ", str(media.file_name))
+        unwanted_chars = ['[', ']', '(', ')']
+        for char in unwanted_chars:
+            file_name = file_name.replace(char, '')
+        file_name = ' '.join(filter(lambda x: not x.startswith('@'), file_name.split()))
+    
         result = col.delete_many({
             'file_name': file_name,
             'file_size': media.file_size
@@ -52,7 +57,7 @@ async def deletemultiplemedia(bot, message):
             })
             if not result.deleted_count:
                 result = sec_col.delete_many({
-                    'file_name': file_name,
+                    'file_name': media.file_name,
                     'file_size': media.file_size
                 })
             if result.deleted_count:
