@@ -2547,6 +2547,9 @@ async def cb_handler(client: Client, query: CallbackQuery):
         if status == "True":
             await save_group_settings(grpid, set_type, False)
         else:
+            settings = await get_settings(grpid)
+            if set_type == "is_shortlink" and not settings['shortlink']:
+                return await query.answer("First Add Your Shortlink Url And Api By /shortlink Command, Then Turn Me On.")
             await save_group_settings(grpid, set_type, True)
 
         settings = await get_settings(grpid)
