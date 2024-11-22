@@ -223,16 +223,12 @@ async def search_gagala(text):
     return [title.getText() for title in titles]
 
 async def get_settings(group_id):
-#    settings = temp.SETTINGS.get(group_id)
-#    if not settings:
     settings = await db.get_settings(group_id)
-#        temp.SETTINGS[group_id] = settings
     return settings
     
 async def save_group_settings(group_id, key, value):
     current = await get_settings(group_id)
     current.update({key: value})
- #   temp.SETTINGS[group_id] = current
     await db.update_settings(group_id, current)
     
 def get_size(size):
@@ -519,14 +515,7 @@ async def get_shortlink(chat_id, link):
     
 async def get_tutorial(chat_id):
     settings = await get_settings(chat_id) #fetching settings for group
-    if 'tutorial' in settings.keys():
-        if settings['is_tutorial']:
-            TUTORIAL_URL = settings['tutorial']
-        else:
-            TUTORIAL_URL = TUTORIAL
-    else:
-        TUTORIAL_URL = TUTORIAL
-    return TUTORIAL_URL
+    return settings['tutorial']
         
 async def get_verify_shorted_link(link, url, api):
     API = api
