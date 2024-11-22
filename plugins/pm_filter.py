@@ -1393,6 +1393,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
             alert = alerts[int(i)]
             alert = alert.replace("\\n", "\n").replace("\\t", "\t")
             await query.answer(alert, show_alert=True)
+    
     elif "alertmessage" in query.data:
         grp_id = query.message.chat.id
         i = query.data.split(":")[1]
@@ -1465,18 +1466,19 @@ async def cb_handler(client: Client, query: CallbackQuery):
         clicked = query.from_user.id
         ident, key = query.data.split("#")
         settings = await get_settings(query.message.chat.id)
+        pre = 'allfilesp' if settings['file_secure'] else 'allfiles'
         try:
             if settings['is_shortlink'] and not await db.has_premium_access(query.from_user.id):
                 if SHORTLINK_MODE == True:
                     await query.answer(url=f"https://telegram.me/{temp.U_NAME}?start=sendfiles1_{key}")
                     
                 else:
-                    await query.answer(url=f"https://telegram.me/{temp.U_NAME}?start=allfiles_{key}")
+                    await query.answer(url=f"https://telegram.me/{temp.U_NAME}?start={pre}_{key}")
             elif settings['is_shortlink'] and await db.has_premium_access(query.from_user.id):
-                await query.answer(url=f"https://telegram.me/{temp.U_NAME}?start=allfiles_{key}")
+                await query.answer(url=f"https://telegram.me/{temp.U_NAME}?start={pre}_{key}")
                 return 
             else:
-                await query.answer(url=f"https://telegram.me/{temp.U_NAME}?start=allfiles_{key}")
+                await query.answer(url=f"https://telegram.me/{temp.U_NAME}?start={pre}_{key}")
                 
             
                 
