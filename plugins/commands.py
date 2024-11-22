@@ -1198,7 +1198,7 @@ async def onshortlink(bot, message):
         return await message.reply_text("<b>You don't have access to use this command!\n\nAdd Me to Your Own Group as Admin and Try This Command\n\nFor More PM Me With This Command</b>")
     else:
         pass
-    settings = await get_settings(grp_id)
+    settings = await get_settings(grpid)
     if not settings['shortlink']:
         return await message.reply_text("**First Add Your Shortlink Url And Api By /shortlink Command, Then Turn Me On.**")
     await save_group_settings(grpid, 'is_shortlink', True)
