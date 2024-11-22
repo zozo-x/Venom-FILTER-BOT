@@ -1279,6 +1279,7 @@ async def removetutorial(bot, message):
     else:
         pass
     reply = await message.reply_text("<b>Please Wait...</b>")
+    await save_group_settings(grpid, 'tutorial', "")
     await save_group_settings(grpid, 'is_tutorial', False)
     await reply.edit_text(f"<b>Successfully Removed Your Tutorial Link!!!</b>")
 
