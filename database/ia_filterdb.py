@@ -118,13 +118,6 @@ async def get_search_results(chat_id, query, file_type=None, max_results=10, off
     else:
         filter = {'file_name': regex}
 
-#    if MULTIPLE_DATABASE == True:
-#        result1 = col.count_documents(filter)
-#        result2 = sec_col.count_documents(filter)
-#        total_results = result1 + result2
-#    else:
-#        total_results = col.count_documents(filter)
-    
     if MULTIPLE_DATABASE == True:
         cursor1 = col.find(filter)
         cursor2 = sec_col.find(filter)
