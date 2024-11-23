@@ -312,8 +312,8 @@ async def start(client, message):
                 filesarr.append(msg)
                 
             except FloodWait as e:
-                await asyncio.sleep(e.value)
                 k = await message.reply_text(f"Waiting For {e.value} Seconds.")
+                await asyncio.sleep(e.value)
                 msg = await client.send_cached_media(
                     chat_id=message.from_user.id,
                     file_id=msg.get("file_id"),
