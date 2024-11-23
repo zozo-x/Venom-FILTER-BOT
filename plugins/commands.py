@@ -93,7 +93,8 @@ async def start(client, message):
                 invite_link = await client.create_chat_invite_link(chat_id=(int(AUTH_CHANNEL)), creates_join_request=True)
             else:
                 invite_link = await client.create_chat_invite_link(int(AUTH_CHANNEL))
-        except ChatAdminRequired:
+        except Exception as e:
+            print(e)
             await message.reply_text("Make sure Bot is admin in Forcesub channel")
             return
         try:
@@ -131,7 +132,7 @@ async def start(client, message):
             return
         except Exception as e:
             print(e)
-            await message.reply_text("something wrong with force subscribe.")
+            return await message.reply_text("something wrong with force subscribe.")
             
     if len(message.command) == 2 and message.command[1] in ["subscribe", "error", "okay", "help"]:
         if PREMIUM_AND_REFERAL_MODE == True:
