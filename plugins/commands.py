@@ -236,11 +236,13 @@ async def start(client, message):
         pre = ""
     if data.split("-", 1)[0] == "BATCH":
         sts = await message.reply("<b>Please wait...</b>")
-        file_id = data.split("-", 1)[1]
+     #   file_id = data.split("-", 1)[1]
+        b_string = data.split("-", 1)[1]
+        file_id = (base64.urlsafe_b64decode(b_string + "=" * (-len(b_string) % 4))).decode("ascii")
       #  msgs = BATCH_FILES.get(file_id)
         if not msgs:
-            #file = await client.download_media(file_id)
-            file = await file_id.download()
+            file = await client.download_media(file_id)
+           # file = await file_id.download()
             try: 
                 with open(file) as file_data:
                     msgs=json.loads(file_data.read())
