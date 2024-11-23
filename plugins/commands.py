@@ -302,27 +302,6 @@ async def start(client, message):
                     ],[
                         InlineKeyboardButton('𝗕𝗢𝗧 𝗢𝗪𝗡𝗘𝗥', url="https://t.me/KingVJ01")
                     ]]
-                try:
-                    msg = await client.send_video(
-                        chat_id=message.from_user.id,
-                        video=msg.get("file_id"),
-                        caption=f_caption,
-                        protect_content=msg.get('protect', False),
-                        reply_markup=InlineKeyboardMarkup(button)
-                    )
-                except:
-                    msg = await client.send_document(
-                        chat_id=message.from_user.id,
-                        document=msg.get("file_id"),
-                        caption=f_caption,
-                        protect_content=msg.get('protect', False),
-                        reply_markup=InlineKeyboardMarkup(button)
-                    )
-                filesarr.append(msg)
-                
-            except FloodWait as e:
-                await asyncio.sleep(e.x)
-                logger.warning(f"Floodwait of {e.x} sec.")
                 msg = await client.send_cached_media(
                     chat_id=message.from_user.id,
                     file_id=msg.get("file_id"),
@@ -331,23 +310,33 @@ async def start(client, message):
                     reply_markup=InlineKeyboardMarkup(button)
                 )
                 filesarr.append(msg)
-                k = await client.send_message(chat_id = message.from_user.id, text=f"<b><u>❗️❗️❗️IMPORTANT❗️️❗️❗️</u></b>\n\nThis Movie Files/Videos will be deleted in <b><u>10 mins</u> 🫥 <i></b>(Due to Copyright Issues)</i>.\n\n<b><i>Please forward this ALL Files/Videos to your Saved Messages and Start Download there</i></b>")
-                await asyncio.sleep(600)
-                for x in filesarr:
-                    await x.delete()
-                await k.edit_text("<b>Your All Files/Videos is successfully deleted!!!</b>")
-            
+                
+            except FloodWait as e:
+                await asyncio.sleep(e.value)
+                k = await message.reply_text(f"Waiting For {e.value} Seconds.")
+                msg = await client.send_cached_media(
+                    chat_id=message.from_user.id,
+                    file_id=msg.get("file_id"),
+                    caption=f_caption,
+                    protect_content=msg.get('protect', False),
+                    reply_markup=InlineKeyboardMarkup(button)
+                )
+                filesarr.append(msg)
+                
             except Exception as e:
                 logger.warning(e)
                 continue
             await asyncio.sleep(1) 
         await sts.delete()
+        try:
+            await k.delete()
+        except:
+            pass
         k = await client.send_message(chat_id = message.from_user.id, text=f"<b><u>❗️❗️❗️IMPORTANT❗️️❗️❗️</u></b>\n\nThis Movie Files/Videos will be deleted in <b><u>10 mins</u> 🫥 <i></b>(Due to Copyright Issues)</i>.\n\n<b><i>Please forward this ALL Files/Videos to your Saved Messages and Start Download there</i></b>")
         await asyncio.sleep(600)
         for x in filesarr:
             await x.delete()
-        await k.edit_text("<b>Your All Files/Videos is successfully deleted!!!</b>")       
-        
+        await k.edit_text("<b>Your All Files/Videos is successfully deleted!!!</b>")  
         return
     
     elif data.split("-", 1)[0] == "DSTORE":
