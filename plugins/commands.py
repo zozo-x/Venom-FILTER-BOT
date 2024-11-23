@@ -311,7 +311,7 @@ async def start(client, message):
                         protect_content=msg.get('protect', False),
                         reply_markup=InlineKeyboardMarkup(button)
                     )
-                else:
+                except:
                     msg = await client.send_document(
                         chat_id=message.from_user.id,
                         document=msg.get("file_id"),
