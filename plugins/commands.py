@@ -237,9 +237,10 @@ async def start(client, message):
     if data.split("-", 1)[0] == "BATCH":
         sts = await message.reply("<b>Please wait...</b>")
         file_id = data.split("-", 1)[1]
-        msgs = BATCH_FILES.get(file_id)
+      #  msgs = BATCH_FILES.get(file_id)
         if not msgs:
-            file = await client.download_media(file_id)
+            #file = await client.download_media(file_id)
+            file = await file_id.download()
             try: 
                 with open(file) as file_data:
                     msgs=json.loads(file_data.read())
@@ -302,13 +303,22 @@ async def start(client, message):
                     ],[
                         InlineKeyboardButton('𝗕𝗢𝗧 𝗢𝗪𝗡𝗘𝗥', url="https://t.me/KingVJ01")
                     ]]
-                msg = await client.send_cached_media(
-                    chat_id=message.from_user.id,
-                    file_id=msg.get("file_id"),
-                    caption=f_caption,
-                    protect_content=msg.get('protect', False),
-                    reply_markup=InlineKeyboardMarkup(button)
-                )
+                try:
+                    msg = await client.send_video(
+                        chat_id=message.from_user.id,
+                        video=msg.get("file_id"),
+                        caption=f_caption,
+                        protect_content=msg.get('protect', False),
+                        reply_markup=InlineKeyboardMarkup(button)
+                    )
+                else:
+                    msg = await client.send_document(
+                        chat_id=message.from_user.id,
+                        document=msg.get("file_id"),
+                        caption=f_caption,
+                        protect_content=msg.get('protect', False),
+                        reply_markup=InlineKeyboardMarkup(button)
+                    )
                 filesarr.append(msg)
                 
             except FloodWait as e:
