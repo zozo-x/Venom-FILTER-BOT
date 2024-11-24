@@ -458,7 +458,9 @@ async def start(client, message):
         await asyncio.sleep(600)
         for x in filesarr:
             await x.delete()
-        return await sts.delete()
+        await k.edit_text("<b>Your All Files/Videos is successfully deleted!!!</b>")
+        await sts.delete()
+        return
 
     elif data.split("-", 1)[0] == "verify":
         userid = data.split("-", 2)[1]
