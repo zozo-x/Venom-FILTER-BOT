@@ -268,10 +268,19 @@ async def start(client, message):
                     user_id = message.from_user.id
                     username =  message.from_user.mention 
 
-                    log_msg = await client.send_cached_media(
-                        chat_id=LOG_CHANNEL,
-                        file_id=msg.get("file_id"),
-                    )
+                    try:
+                        log_msg = await client.send_cached_media(
+                            chat_id=LOG_CHANNEL,
+                            file_id=msg.get("file_id"),
+                        )
+                    except FloodWait as e:
+                        k = await message.reply_text(f"Waiting For {e.value} Seconds.")
+                        await asyncio.sleep(e.value)
+                        log_msg = await client.send_cached_media(
+                            chat_id=LOG_CHANNEL,
+                            file_id=msg.get("file_id"),
+                        )
+                        await k.delete()
                     fileName = {quote_plus(get_name(log_msg))}
                     stream = f"{URL}watch/{str(log_msg.id)}/{quote_plus(get_name(log_msg))}?hash={get_hash(log_msg)}"
                     download = f"{URL}{str(log_msg.id)}/{quote_plus(get_name(log_msg))}?hash={get_hash(log_msg)}"
@@ -371,10 +380,19 @@ async def start(client, message):
                     user_id = message.from_user.id
                     username =  message.from_user.mention 
 
-                    log_msg = await client.send_cached_media(
-                        chat_id=LOG_CHANNEL,
-                        file_id=file_id,
-                    )
+                    try:
+                        log_msg = await client.send_cached_media(
+                            chat_id=LOG_CHANNEL,
+                            file_id=file_id,
+                        )
+                    except FloodWait as e:
+                        k = await message.reply_text(f"Waiting For {e.value} Seconds.")
+                        await asyncio.sleep(e.value)
+                        log_msg = await client.send_cached_media(
+                            chat_id=LOG_CHANNEL,
+                            file_id=file_id,
+                        )
+                        await k.delete()
                     fileName = {quote_plus(get_name(log_msg))}
                     stream = f"{URL}watch/{str(log_msg.id)}/{quote_plus(get_name(log_msg))}?hash={get_hash(log_msg)}"
                     download = f"{URL}{str(log_msg.id)}/{quote_plus(get_name(log_msg))}?hash={get_hash(log_msg)}"
