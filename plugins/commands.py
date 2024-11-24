@@ -362,9 +362,12 @@ async def start(client, message):
         async for msg in client.iter_messages(int(f_chat_id), int(l_msg_id), int(f_msg_id)):
             if msg.media:
                 media = getattr(msg, msg.media.value)
+                file_type = msg.media
+                file = getattr(msg, file_type.value)
+                size = get_size(int(file.file_size))
                 if BATCH_FILE_CAPTION:
                     try:
-                        f_caption=BATCH_FILE_CAPTION.format(file_name=getattr(media, 'file_name', ''), file_size=getattr(media, 'file_size', ''), file_caption=getattr(msg, 'caption', ''))
+                        f_caption=BATCH_FILE_CAPTION.format(file_name=getattr(media, 'file_name', ''), file_size='' if size is None else size, file_caption=getattr(msg, 'caption', ''))
                     except Exception as e:
                         logger.exception(e)
                         f_caption = getattr(msg, 'caption', '')
@@ -372,8 +375,6 @@ async def start(client, message):
                     media = getattr(msg, msg.media.value)
                     file_name = getattr(media, 'file_name', '')
                     f_caption = getattr(msg, 'caption', file_name)
-                file_type = msg.media
-                file = getattr(msg, file_type.value)
                 file_id = file.file_id
                 if STREAM_MODE == True:
                     # Create the inline keyboard button with callback_data
