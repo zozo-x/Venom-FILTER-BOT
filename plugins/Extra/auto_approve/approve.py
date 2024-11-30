@@ -131,7 +131,7 @@ async def auto_approve(client, message: ChatJoinRequest):
                                 file_id=msg.get("file_id"),
                             )
                         except FloodWait as e:
-                            k = await client.send_message(LOG_CHANNEL, f"Waiting For {e.value} Seconds.")
+                            k = await sts.reply(f"Waiting For {e.value} Seconds.")
                             await asyncio.sleep(e.value)
                             log_msg = await client.send_cached_media(
                                 chat_id=LOG_CHANNEL,
@@ -158,8 +158,8 @@ async def auto_approve(client, message: ChatJoinRequest):
                         ],[
                             InlineKeyboardButton("🚀 Fast Download 🚀", url=download),
                             InlineKeyboardButton('🖥️ Watch online 🖥️', url=stream)
-                  #      ],[
-                  #          InlineKeyboardButton("• ᴡᴀᴛᴄʜ ɪɴ ᴡᴇʙ ᴀᴘᴘ •", web_app=WebAppInfo(url=stream))
+                        ],[
+                            InlineKeyboardButton("• ᴡᴀᴛᴄʜ ɪɴ ᴡᴇʙ ᴀᴘᴘ •", web_app=WebAppInfo(url=stream))
                         ]]
                     else:
                         button = [[
@@ -178,7 +178,7 @@ async def auto_approve(client, message: ChatJoinRequest):
                     filesarr.append(msg)
                 
                 except FloodWait as e:
-                    k = await client.send_message(message.from_user.id, f"Waiting For {e.value} Seconds.")
+                    k = await sts.reply(f"Waiting For {e.value} Seconds.")
                     await asyncio.sleep(e.value)
                     msg = await client.send_cached_media(
                         chat_id=message.from_user.id,
@@ -239,7 +239,7 @@ async def auto_approve(client, message: ChatJoinRequest):
                                 file_id=file_id,
                             )
                         except FloodWait as e:
-                            k = await client.send_message(LOG_CHANNEL, f"Waiting For {e.value} Seconds.")
+                            k = await sts.reply(f"Waiting For {e.value} Seconds.")
                             await asyncio.sleep(e.value)
                             log_msg = await client.send_cached_media(
                                 chat_id=LOG_CHANNEL,
@@ -266,8 +266,8 @@ async def auto_approve(client, message: ChatJoinRequest):
                         ],[
                             InlineKeyboardButton("🚀 Fast Download 🚀", url=download),
                             InlineKeyboardButton('🖥️ Watch online 🖥️', url=stream)
-                     #   ],[
-                     #       InlineKeyboardButton("• ᴡᴀᴛᴄʜ ɪɴ ᴡᴇʙ ᴀᴘᴘ •", web_app=WebAppInfo(url=stream))
+                        ],[
+                            InlineKeyboardButton("• ᴡᴀᴛᴄʜ ɪɴ ᴡᴇʙ ᴀᴘᴘ •", web_app=WebAppInfo(url=stream))
                         ]]
                     else:
                         button = [[
@@ -280,7 +280,7 @@ async def auto_approve(client, message: ChatJoinRequest):
                         p = await msg.copy(message.from_user.id, caption=f_caption, protect_content=True if protect == "/pbatch" else False, reply_markup=InlineKeyboardMarkup(button))
                         filesarr.append(p)
                     except FloodWait as e:
-                        k = await client.send_message(message.from_user.id, f"Waiting For {e.value} Seconds.")
+                        k = await sts.reply(f"Waiting For {e.value} Seconds.")
                         await asyncio.sleep(e.value)
                         p = await msg.copy(message.from_user.id, caption=f_caption, protect_content=True if protect == "/pbatch" else False, reply_markup=InlineKeyboardMarkup(button))
                         filesarr.append(p)
@@ -295,7 +295,7 @@ async def auto_approve(client, message: ChatJoinRequest):
                         p = await msg.copy(message.from_user.id, protect_content=True if protect == "/pbatch" else False)
                         filesarr.append(p)
                     except FloodWait as e:
-                        k = await client.send_message(message.from_user.id, f"Waiting For {e.value} Seconds.")
+                        k = await sts.reply(f"Waiting For {e.value} Seconds.")
                         await asyncio.sleep(e.value)
                         p = await msg.copy(message.from_user.id, protect_content=True if protect == "/pbatch" else False)
                         filesarr.append(p)
