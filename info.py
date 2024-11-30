@@ -133,6 +133,7 @@ TUTORIAL = environ.get('TUTORIAL', '') # How Open Shortner Link Video Link , Cha
 
 
 # Others
+CACHE_TIME = int(environ.get('CACHE_TIME', 1800))
 MAX_B_TN = environ.get("MAX_B_TN", "5")
 PORT = environ.get("PORT", "8080")
 MSG_ALRT = environ.get('MSG_ALRT', 'Hello My Dear Friends ❤️')
