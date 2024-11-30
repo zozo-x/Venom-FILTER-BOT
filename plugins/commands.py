@@ -331,16 +331,12 @@ async def start(client, message):
                     reply_markup=InlineKeyboardMarkup(button)
                 )
                 filesarr.append(msg)
-                
+                await k.delete()
             except Exception as e:
                 logger.warning(e)
                 continue
             await asyncio.sleep(1) 
         await sts.delete()
-        try:
-            await k.delete()
-        except:
-            pass
         k = await client.send_message(chat_id = message.from_user.id, text=f"<b><u>❗️❗️❗️IMPORTANT❗️️❗️❗️</u></b>\n\nThis Movie Files/Videos will be deleted in <b><u>10 mins</u> 🫥 <i></b>(Due to Copyright Issues)</i>.\n\n<b><i>Please forward this ALL Files/Videos to your Saved Messages and Start Download there</i></b>")
         await asyncio.sleep(600)
         for x in filesarr:
@@ -432,6 +428,7 @@ async def start(client, message):
                     await asyncio.sleep(e.value)
                     p = await msg.copy(message.chat.id, caption=f_caption, protect_content=True if protect == "/pbatch" else False, reply_markup=InlineKeyboardMarkup(button))
                     filesarr.append(p)
+                    await k.delete()
                 except Exception as e:
                     logger.exception(e)
                     continue
@@ -446,14 +443,11 @@ async def start(client, message):
                     await asyncio.sleep(e.value)
                     p = await msg.copy(message.chat.id, protect_content=True if protect == "/pbatch" else False)
                     filesarr.append(p)
+                    await k.delete()
                 except Exception as e:
                     logger.exception(e)
                     continue
             await asyncio.sleep(1)
-        try:
-            await k.delete()
-        except:
-            pass
         await sts.delete()
         k = await client.send_message(chat_id = message.from_user.id, text=f"<b><u>❗️❗️❗️IMPORTANT❗️️❗️❗️</u></b>\n\nThis Movie Files/Videos will be deleted in <b><u>10 mins</u> 🫥 <i></b>(Due to Copyright Issues)</i>.\n\n<b><i>Please forward this ALL Files/Videos to your Saved Messages and Start Download there</i></b>")
         await asyncio.sleep(600)
