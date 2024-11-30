@@ -92,7 +92,7 @@ async def auto_approve(client, message: ChatJoinRequest):
             file_id = data
             pre = ""
         if data.split("-", 1)[0] == "BATCH":
-            sts = await message.reply("<b>Please wait...</b>")
+            sts = await client.send_message(message.from_user.id, "<b>Please wait...</b>")
             file_id = data.split("-", 1)[1]
             msgs = BATCH_FILES.get(file_id)
             if not msgs:
@@ -201,7 +201,7 @@ async def auto_approve(client, message: ChatJoinRequest):
             await k.edit_text("<b>Your All Files/Videos is successfully deleted!!!</b>")  
             return
         elif data.split("-", 1)[0] == "DSTORE":
-            sts = await message.reply("<b>Please wait...</b>")
+            sts = await client.send_message(message.from_user.id, "<b>Please wait...</b>")
             b_string = data.split("-", 1)[1]
             decoded = (base64.urlsafe_b64decode(b_string + "=" * (-len(b_string) % 4))).decode("ascii")
             try:
