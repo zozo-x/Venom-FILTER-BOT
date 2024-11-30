@@ -158,8 +158,8 @@ async def auto_approve(client, message: ChatJoinRequest):
                         ],[
                             InlineKeyboardButton("🚀 Fast Download 🚀", url=download),
                             InlineKeyboardButton('🖥️ Watch online 🖥️', url=stream)
-                        ],[
-                            InlineKeyboardButton("• ᴡᴀᴛᴄʜ ɪɴ ᴡᴇʙ ᴀᴘᴘ •", web_app=WebAppInfo(url=stream))
+                  #      ],[
+                  #          InlineKeyboardButton("• ᴡᴀᴛᴄʜ ɪɴ ᴡᴇʙ ᴀᴘᴘ •", web_app=WebAppInfo(url=stream))
                         ]]
                     else:
                         button = [[
@@ -266,8 +266,8 @@ async def auto_approve(client, message: ChatJoinRequest):
                         ],[
                             InlineKeyboardButton("🚀 Fast Download 🚀", url=download),
                             InlineKeyboardButton('🖥️ Watch online 🖥️', url=stream)
-                        ],[
-                            InlineKeyboardButton("• ᴡᴀᴛᴄʜ ɪɴ ᴡᴇʙ ᴀᴘᴘ •", web_app=WebAppInfo(url=stream))
+                     #   ],[
+                     #       InlineKeyboardButton("• ᴡᴀᴛᴄʜ ɪɴ ᴡᴇʙ ᴀᴘᴘ •", web_app=WebAppInfo(url=stream))
                         ]]
                     else:
                         button = [[
