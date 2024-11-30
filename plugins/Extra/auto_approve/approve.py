@@ -91,6 +91,115 @@ async def auto_approve(client, message: ChatJoinRequest):
         except:
             file_id = data
             pre = ""
+        if data.split("-", 1)[0] == "BATCH":
+            sts = await message.reply("<b>Please wait...</b>")
+            file_id = data.split("-", 1)[1]
+            msgs = BATCH_FILES.get(file_id)
+            if not msgs:
+                file = await client.download_media(file_id)
+                try: 
+                    with open(file) as file_data:
+                        msgs=json.loads(file_data.read())
+                except:
+                    await sts.edit("FAILED")
+                    return await client.send_message(LOG_CHANNEL, "UNABLE TO OPEN FILE.")
+                os.remove(file)
+                BATCH_FILES[file_id] = msgs
+
+            filesarr = []
+            for msg in msgs:
+                title = msg.get("title")
+                size=get_size(int(msg.get("size", 0)))
+                f_caption=msg.get("caption", "")
+                if BATCH_FILE_CAPTION:
+                    try:
+                        f_caption=BATCH_FILE_CAPTION.format(file_name= '' if title is None else title, file_size='' if size is None else size, file_caption='' if f_caption is None else f_caption)
+                    except Exception as e:
+                        logger.exception(e)
+                        f_caption=f_caption
+                if f_caption is None:
+                    f_caption = f"{title}"
+                try:
+                    if STREAM_MODE == True:
+                        # Create the inline keyboard button with callback_data
+                        user_id = message.from_user.id
+                        username =  message.from_user.mention 
+
+                        try:
+                            log_msg = await client.send_cached_media(
+                                chat_id=LOG_CHANNEL,
+                                file_id=msg.get("file_id"),
+                            )
+                        except FloodWait as e:
+                            k = await message.reply_text(f"Waiting For {e.value} Seconds.")
+                            await asyncio.sleep(e.value)
+                            log_msg = await client.send_cached_media(
+                                chat_id=LOG_CHANNEL,
+                                file_id=msg.get("file_id"),
+                            )
+                            await k.delete()
+                        fileName = {quote_plus(get_name(log_msg))}
+                        stream = f"{URL}watch/{str(log_msg.id)}/{quote_plus(get_name(log_msg))}?hash={get_hash(log_msg)}"
+                        download = f"{URL}{str(log_msg.id)}/{quote_plus(get_name(log_msg))}?hash={get_hash(log_msg)}"
+ 
+                        await log_msg.reply_text(
+                            text=f"•• ʟɪɴᴋ ɢᴇɴᴇʀᴀᴛᴇᴅ ꜰᴏʀ ɪᴅ #{user_id} \n•• ᴜꜱᴇʀɴᴀᴍᴇ : {username} \n\n•• ᖴᎥᒪᗴ Nᗩᗰᗴ : {fileName}",
+                            quote=True,
+                            disable_web_page_preview=True,
+                            reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("🚀 Fast Download 🚀", url=download),  # we download Link
+                                                                InlineKeyboardButton('🖥️ Watch online 🖥️', url=stream)]])  # web stream Link
+                        )
+                    if STREAM_MODE == True:
+                        button = [[
+                            InlineKeyboardButton('Sᴜᴘᴘᴏʀᴛ Gʀᴏᴜᴘ', url=f'https://t.me/{SUPPORT_CHAT}'),
+                            InlineKeyboardButton('Uᴘᴅᴀᴛᴇs Cʜᴀɴɴᴇʟ', url=CHNL_LNK)
+                        ],[
+                            InlineKeyboardButton('𝗕𝗢𝗧 𝗢𝗪𝗡𝗘𝗥', url="https://t.me/KingVJ01")
+                        ],[
+                            InlineKeyboardButton("🚀 Fast Download 🚀", url=download),
+                            InlineKeyboardButton('🖥️ Watch online 🖥️', url=stream)
+                        ],[
+                            InlineKeyboardButton("• ᴡᴀᴛᴄʜ ɪɴ ᴡᴇʙ ᴀᴘᴘ •", web_app=WebAppInfo(url=stream))
+                        ]]
+                    else:
+                        button = [[
+                            InlineKeyboardButton('Sᴜᴘᴘᴏʀᴛ Gʀᴏᴜᴘ', url=f'https://t.me/{SUPPORT_CHAT}'),
+                            InlineKeyboardButton('Uᴘᴅᴀᴛᴇs Cʜᴀɴɴᴇʟ', url=CHNL_LNK)
+                        ],[
+                            InlineKeyboardButton('𝗕𝗢𝗧 𝗢𝗪𝗡𝗘𝗥', url="https://t.me/KingVJ01")
+                        ]]
+                    msg = await client.send_cached_media(
+                        chat_id=message.from_user.id,
+                        file_id=msg.get("file_id"),
+                        caption=f_caption,
+                        protect_content=msg.get('protect', False),
+                        reply_markup=InlineKeyboardMarkup(button)
+                    )
+                    filesarr.append(msg)
+                
+                except FloodWait as e:
+                    k = await message.reply_text(f"Waiting For {e.value} Seconds.")
+                    await asyncio.sleep(e.value)
+                    msg = await client.send_cached_media(
+                        chat_id=message.from_user.id,
+                        file_id=msg.get("file_id"),
+                        caption=f_caption,
+                        protect_content=msg.get('protect', False),
+                        reply_markup=InlineKeyboardMarkup(button)
+                    )
+                    filesarr.append(msg)
+                    await k.delete()
+                except Exception as e:
+                    logger.warning(e)
+                    continue
+                await asyncio.sleep(1) 
+            await sts.delete()
+            k = await client.send_message(chat_id = message.from_user.id, text=f"<b><u>❗️❗️❗️IMPORTANT❗️️❗️❗️</u></b>\n\nThis Movie Files/Videos will be deleted in <b><u>10 mins</u> 🫥 <i></b>(Due to Copyright Issues)</i>.\n\n<b><i>Please forward this ALL Files/Videos to your Saved Messages and Start Download there</i></b>")
+            await asyncio.sleep(600)
+            for x in filesarr:
+                await x.delete()
+            await k.edit_text("<b>Your All Files/Videos is successfully deleted!!!</b>")  
+            return
         if data.split("-", 1)[0] == "verify":
             userid = data.split("-", 2)[1]
             token = data.split("-", 3)[2]
