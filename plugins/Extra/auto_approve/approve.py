@@ -277,12 +277,12 @@ async def auto_approve(client, message: ChatJoinRequest):
                             InlineKeyboardButton('𝗕𝗢𝗧 𝗢𝗪𝗡𝗘𝗥', url="https://t.me/KingVJ01")
                         ]]
                     try:
-                        p = await msg.copy(message.chat.id, caption=f_caption, protect_content=True if protect == "/pbatch" else False, reply_markup=InlineKeyboardMarkup(button))
+                        p = await msg.copy(message.from_user.id, caption=f_caption, protect_content=True if protect == "/pbatch" else False, reply_markup=InlineKeyboardMarkup(button))
                         filesarr.append(p)
                     except FloodWait as e:
                         k = await client.send_message(message.from_user.id, f"Waiting For {e.value} Seconds.")
                         await asyncio.sleep(e.value)
-                        p = await msg.copy(message.chat.id, caption=f_caption, protect_content=True if protect == "/pbatch" else False, reply_markup=InlineKeyboardMarkup(button))
+                        p = await msg.copy(message.from_user.id, caption=f_caption, protect_content=True if protect == "/pbatch" else False, reply_markup=InlineKeyboardMarkup(button))
                         filesarr.append(p)
                         await k.delete()
                     except Exception as e:
@@ -292,12 +292,12 @@ async def auto_approve(client, message: ChatJoinRequest):
                     continue
                 else:
                     try:
-                        p = await msg.copy(message.chat.id, protect_content=True if protect == "/pbatch" else False)
+                        p = await msg.copy(message.from_user.id, protect_content=True if protect == "/pbatch" else False)
                         filesarr.append(p)
                     except FloodWait as e:
                         k = await client.send_message(message.from_user.id, f"Waiting For {e.value} Seconds.")
                         await asyncio.sleep(e.value)
-                        p = await msg.copy(message.chat.id, protect_content=True if protect == "/pbatch" else False)
+                        p = await msg.copy(message.from_user.id, protect_content=True if protect == "/pbatch" else False)
                         filesarr.append(p)
                         await k.delete()
                     except Exception as e:
