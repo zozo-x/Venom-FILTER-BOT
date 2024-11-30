@@ -22,12 +22,6 @@ CACHE_TIME = int(environ.get('CACHE_TIME', 1800))
 # This Pictures Is For Start Message Picture, You Can Add Multiple By Giving One Space Between Each.
 PICS = (environ.get('PICS', 'https://graph.org/file/ce1723991756e48c35aa1.jpg')).split()
 
-# This Picture Is For No Result Message 
-NOR_IMG = environ.get("NOR_IMG", "https://graph.org/file/ce1723991756e48c35aa1.jpg")
-
-# This Picture Is For Spelling Check Message 
-SPELL_IMG = environ.get("SPELL_IMG", "https://graph.org/file/ce1723991756e48c35aa1.jpg")
-
 
 # Admins & Users
 ADMINS = [int(admin) if id_pattern.search(admin) else admin for admin in environ.get('ADMINS', '').split()] # For Multiple Id Use One Space Between Each.
