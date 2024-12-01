@@ -12,7 +12,7 @@ async def stream_start(client, message):
     if STREAM_MODE == False:
         return 
     msg = await client.ask(message.chat.id, "**Now send me your file/video to get stream and download link**")
-    if not msg.media:
+    if not msg.media in [enums.MessageMediaType.VIDEO, enums.MessageMediaType.DOCUMENT]:
         return await message.reply("**Please send me supported media.**")
     if msg.media in [enums.MessageMediaType.VIDEO, enums.MessageMediaType.DOCUMENT]:
         file = getattr(msg, msg.media.value)
