@@ -101,6 +101,7 @@ Join My <a href='https://telegram.dog/vj_botz'>Update Channel</a> For More Updat
 • /telegraph - 𝑔𝑒𝑡 𝑡𝑒𝑙𝑒𝑔𝑟𝑎𝑝ℎ 𝑙𝑖𝑛𝑘 𝑜𝑓 𝑎𝑛𝑦 𝑓𝑖𝑙𝑒 𝑢𝑛𝑑𝑒𝑟 5𝑚𝑏
 • /stickerid - 𝑡𝑜 𝑔𝑒𝑡 𝑖𝑑 𝑎𝑛𝑑 𝑢𝑛𝑖𝑞𝑢𝑒 𝐼'𝑑 𝑜𝑓 𝑠𝑡𝑖𝑐𝑘𝑒𝑟
 • /font - 𝑡𝑜 𝑔𝑒𝑡 𝑎𝑛𝑦 𝑡𝑦𝑝𝑒 𝑜𝑓 𝑓𝑜𝑛𝑡 𝑜𝑓 𝑎𝑛𝑦 𝑤𝑜𝑟𝑑
+• /repo - 𝑔𝑒𝑡 𝑎𝑛𝑦 𝑟𝑒𝑝𝑜 𝑙𝑖𝑛𝑘 𝑏𝑦 𝑠𝑒𝑎𝑟𝑐ℎ𝑖𝑛𝑔
 • /purgerequests - 𝑑𝑒𝑙𝑒𝑡𝑒 𝑎𝑙𝑙 𝑗𝑜𝑖𝑛 𝑟𝑒𝑞𝑢𝑒𝑠𝑡𝑠 𝑓𝑟𝑜𝑚 𝑑𝑎𝑡𝑎𝑏𝑎𝑠𝑒
 • /totalrequests - 𝑔𝑒𝑡 𝑡𝑜𝑡𝑎𝑙 𝑛𝑢𝑚𝑏𝑒𝑟 𝑜𝑓 𝑗𝑜𝑖𝑛 𝑟𝑒𝑞𝑢𝑒𝑠𝑡 𝑓𝑟𝑜𝑚 𝑑𝑎𝑡𝑎𝑏𝑎𝑠𝑒
 ```
