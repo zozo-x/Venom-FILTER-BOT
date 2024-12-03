@@ -14,7 +14,7 @@ from Script import script
 @Client.on_message(filters.command('clone'))
 async def clone_menu(client, message):
     if CLONE_MODE == False:
-        return 
+        return
     if await db.is_clone_exist(message.from_user.id):
         return await message.reply("**ʏᴏᴜ ʜᴀᴠᴇ ᴀʟʀᴇᴀᴅʏ ᴄʟᴏɴᴇᴅ ᴀ ʙᴏᴛ ᴅᴇʟᴇᴛᴇ ғɪʀsᴛ ɪᴛ ʙʏ /deleteclone**")
     else:
@@ -47,6 +47,8 @@ async def clone_menu(client, message):
 
 @Client.on_message(filters.command('deleteclone'))
 async def delete_clone_menu(client, message):
+    if CLONE_MODE == False:
+        return
     if await db.is_clone_exist(message.from_user.id):
         await db.delete_clone(message.from_user.id)
         await message.reply("**sᴜᴄᴄᴇssғᴜʟʟʏ ᴅᴇʟᴇᴛᴇᴅ ʏᴏᴜʀ ᴄʟᴏɴᴇ ʙᴏᴛ, ʏᴏᴜ ᴄᴀɴ ᴄʀᴇᴀᴛᴇ ᴀɢᴀɪɴ ʙʏ /clone**")
