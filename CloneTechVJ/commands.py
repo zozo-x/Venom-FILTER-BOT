@@ -150,43 +150,7 @@ async def start(client, message):
     user = message.from_user.id
     files_ = await get_file_details(file_id)           
     if not files_:
-        pre, file_id = ((base64.urlsafe_b64decode(data + "=" * (-len(data) % 4))).decode("ascii")).split("_", 1)
-        try:
-            k = await temp.BOT.send_cached_media(chat_id=PUBLIC_FILE_CHANNEL, file_id=file_id)
-            vj = await client.get_messages(PUBLIC_FILE_CHANNEL, k.id)
-            mg = getattr(vj, vj.media.value)
-            file_id = mg.file_id
-            if cd["update_channel_link"] != None:
-                up = cd["update_channel_link"]
-                button = [[
-                    InlineKeyboardButton('🍿 ᴊᴏɪɴ ᴜᴘᴅᴀᴛᴇ ᴄʜᴀɴɴᴇʟ 🍿', url=up)
-                ]]
-                reply_markup=InlineKeyboardMarkup(button)
-            else:
-                reply_markup=None
-            msg = await client.send_cached_media(
-                chat_id=message.from_user.id,
-                file_id=file_id,
-                protect_content=True if pre == 'filep' else False,
-                reply_markup=reply_markup
-            )
-            filetype = msg.media
-            file = getattr(msg, filetype.value)
-            title = '@VJ_Botz  ' + ' '.join(filter(lambda x: not x.startswith('[') and not x.startswith('@'), file.file_name.split()))
-            size=get_size(file.file_size)
-            f_caption = f"<code>{title}</code>"
-            await msg.edit_caption(
-                caption=f_caption,
-                reply_markup=reply_markup
-            )
-            k = await msg.reply("<b><u>❗️❗️❗️IMPORTANT❗️️❗️❗️</u></b>\n\nThis Movie File/Video will be deleted in <b><u>10 mins</u> 🫥 <i></b>(Due to Copyright Issues)</i>.\n\n<b><i>Please forward this File/Video to your Saved Messages and Start Download there</i></b>",quote=True)
-            await asyncio.sleep(600)
-            await msg.delete()
-            await k.edit_text("<b>Your File/Video is successfully deleted!!!</b>")
-            return
-        except:
-            pass
-        return await message.reply('No such file exist.')
+        return await message.reply('**No such file exist.**')
     files = files_
     title = '@VJ_Botz  ' + ' '.join(filter(lambda x: not x.startswith('[') and not x.startswith('@'), files['file_name'].split()))
     size=get_size(files['file_size'])
@@ -209,7 +173,7 @@ async def start(client, message):
         chat_id=message.from_user.id,
         file_id=file_id,
         caption=f_caption,
-        protect_content=True if pre == 'filep' else False,
+        protect_content=False,
         reply_markup=reply_markup
     )
     k = await msg.reply("<b><u>❗️❗️❗️IMPORTANT❗️️❗️❗️</u></b>\n\nThis Movie File/Video will be deleted in <b><u>10 mins</u> 🫥 <i></b>(Due to Copyright Issues)</i>.\n\n<b><i>Please forward this File/Video to your Saved Messages and Start Download there</i></b>",quote=True)
