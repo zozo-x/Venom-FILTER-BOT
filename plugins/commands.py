@@ -799,18 +799,11 @@ async def delete_all_index(bot, message):
     await message.reply_text(
         'This will delete all indexed files.\nDo you want to continue??',
         reply_markup=InlineKeyboardMarkup(
-            [
-                [
-                    InlineKeyboardButton(
-                        text="YES", callback_data="autofilter_delete"
-                    )
-                ],
-                [
-                    InlineKeyboardButton(
-                        text="CANCEL", callback_data="close_data"
-                    )
-                ],
-            ]
+            [[
+                InlineKeyboardButton(text="YES", callback_data="autofilter_delete")
+            ],[
+                InlineKeyboardButton(text="CANCEL", callback_data="close_data")
+            ]]
         ),
         quote=True,
     )
@@ -1047,9 +1040,9 @@ async def requests(bot, message):
         try:
             if REQST_CHANNEL is not None:
                 btn = [[
-                        InlineKeyboardButton('View Request', url=f"{message.reply_to_message.link}"),
-                        InlineKeyboardButton('Show Options', callback_data=f'show_option#{reporter}')
-                      ]]
+                    InlineKeyboardButton('View Request', url=f"{message.reply_to_message.link}"),
+                    InlineKeyboardButton('Show Options', callback_data=f'show_option#{reporter}')
+                ]]
                 reported_post = await bot.send_message(chat_id=REQST_CHANNEL, text=f"<b>𝖱𝖾𝗉𝗈𝗋𝗍𝖾𝗋 : {mention} ({reporter})\n\n𝖬𝖾𝗌𝗌𝖺𝗀𝖾 : {content}</b>", reply_markup=InlineKeyboardMarkup(btn))
                 success = True
             elif len(content) >= 3:
@@ -1057,7 +1050,7 @@ async def requests(bot, message):
                     btn = [[
                         InlineKeyboardButton('View Request', url=f"{message.reply_to_message.link}"),
                         InlineKeyboardButton('Show Options', callback_data=f'show_option#{reporter}')
-                      ]]
+                    ]]
                     reported_post = await bot.send_message(chat_id=admin, text=f"<b>𝖱𝖾𝗉𝗈𝗋𝗍𝖾𝗋 : {mention} ({reporter})\n\n𝖬𝖾𝗌𝗌𝖺𝗀𝖾 : {content}</b>", reply_markup=InlineKeyboardMarkup(btn))
                     success = True
             else:
@@ -1082,9 +1075,9 @@ async def requests(bot, message):
         try:
             if REQST_CHANNEL is not None and len(content) >= 3:
                 btn = [[
-                        InlineKeyboardButton('View Request', url=f"{message.link}"),
-                        InlineKeyboardButton('Show Options', callback_data=f'show_option#{reporter}')
-                      ]]
+                    InlineKeyboardButton('View Request', url=f"{message.link}"),
+                    InlineKeyboardButton('Show Options', callback_data=f'show_option#{reporter}')
+                ]]
                 reported_post = await bot.send_message(chat_id=REQST_CHANNEL, text=f"<b>𝖱𝖾𝗉𝗈𝗋𝗍𝖾𝗋 : {mention} ({reporter})\n\n𝖬𝖾𝗌𝗌𝖺𝗀𝖾 : {content}</b>", reply_markup=InlineKeyboardMarkup(btn))
                 success = True
             elif len(content) >= 3:
@@ -1092,7 +1085,7 @@ async def requests(bot, message):
                     btn = [[
                         InlineKeyboardButton('View Request', url=f"{message.link}"),
                         InlineKeyboardButton('Show Options', callback_data=f'show_option#{reporter}')
-                      ]]
+                    ]]
                     reported_post = await bot.send_message(chat_id=admin, text=f"<b>𝖱𝖾𝗉𝗈𝗋𝗍𝖾𝗋 : {mention} ({reporter})\n\n𝖬𝖾𝗌𝗌𝖺𝗀𝖾 : {content}</b>", reply_markup=InlineKeyboardMarkup(btn))
                     success = True
             else:
@@ -1110,9 +1103,9 @@ async def requests(bot, message):
     if success:
         link = await bot.create_chat_invite_link(int(REQST_CHANNEL))
         btn = [[
-                InlineKeyboardButton('Join Channel', url=link.invite_link),
-                InlineKeyboardButton('View Request', url=f"{reported_post.link}")
-              ]]
+            InlineKeyboardButton('Join Channel', url=link.invite_link),
+            InlineKeyboardButton('View Request', url=f"{reported_post.link}")
+        ]]
         await message.reply_text("<b>Your request has been added! Please wait for some time.\n\nJoin Channel First & View Request</b>", reply_markup=InlineKeyboardMarkup(btn))
     
 @Client.on_message(filters.command("send") & filters.user(ADMINS))
@@ -1159,7 +1152,7 @@ async def deletemultiplefiles(bot, message):
     #await asyncio.sleep(5)
     btn = [[
        InlineKeyboardButton("Yes, Continue !", callback_data=f"killfilesdq#{keyword}")
-       ],[
+    ],[
        InlineKeyboardButton("No, Abort operation !", callback_data="close_data")
     ]]
     await message.reply_text(
