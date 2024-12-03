@@ -24,9 +24,11 @@ async def index_files(bot, query):
     _, raju, chat, lst_msg_id, from_user = query.data.split("#")
     if raju == 'reject':
         await query.message.delete()
-        await bot.send_message(int(from_user),
-                               f'Your Submission for indexing {chat} has been decliened by our moderators.',
-                               reply_to_message_id=int(lst_msg_id))
+        await bot.send_message(
+            int(from_user),
+            f'Your Submission for indexing {chat} has been decliened by our moderators.',
+            reply_to_message_id=int(lst_msg_id)
+        )
         return
 
     if lock.locked():
@@ -35,9 +37,11 @@ async def index_files(bot, query):
 
     await query.answer('Processing...⏳', show_alert=True)
     if int(from_user) not in ADMINS:
-        await bot.send_message(int(from_user),
-                               f'Your Submission for indexing {chat} has been accepted by our moderators and will be added soon.',
-                               reply_to_message_id=int(lst_msg_id))
+        await bot.send_message(
+            int(from_user),
+            f'Your Submission for indexing {chat} has been accepted by our moderators and will be added soon.',
+            reply_to_message_id=int(lst_msg_id)
+        )
     await msg.edit(
         "Starting Indexing",
         reply_markup=InlineKeyboardMarkup(
@@ -85,19 +89,16 @@ async def send_for_index(bot, message):
         return await message.reply('This may be group and iam not a admin of the group.')
 
     if message.from_user.id in ADMINS:
-        buttons = [
-            [
-                InlineKeyboardButton('Yes',
-                                     callback_data=f'index#accept#{chat_id}#{last_msg_id}#{message.from_user.id}')
-            ],
-            [
-                InlineKeyboardButton('close', callback_data='close_data'),
-            ]
-        ]
+        buttons = [[
+            InlineKeyboardButton('Yes', callback_data=f'index#accept#{chat_id}#{last_msg_id}#{message.from_user.id}')
+        ],[
+            InlineKeyboardButton('close', callback_data='close_data')
+        ]]
         reply_markup = InlineKeyboardMarkup(buttons)
         return await message.reply(
             f'Do you Want To Index This Channel/ Group ?\n\nChat ID/ Username: <code>{chat_id}</code>\nLast Message ID: <code>{last_msg_id}</code>',
-            reply_markup=reply_markup)
+            reply_markup=reply_markup
+        )
 
     if type(chat_id) is int:
         try:
@@ -106,20 +107,17 @@ async def send_for_index(bot, message):
             return await message.reply('Make sure iam an admin in the chat and have permission to invite users.')
     else:
         link = f"@{message.forward_from_chat.username}"
-    buttons = [
-        [
-            InlineKeyboardButton('Accept Index',
-                                 callback_data=f'index#accept#{chat_id}#{last_msg_id}#{message.from_user.id}')
-        ],
-        [
-            InlineKeyboardButton('Reject Index',
-                                 callback_data=f'index#reject#{chat_id}#{message.id}#{message.from_user.id}'),
-        ]
-    ]
+    buttons = [[
+        InlineKeyboardButton('Accept Index', callback_data=f'index#accept#{chat_id}#{last_msg_id}#{message.from_user.id}')
+    ],[
+        InlineKeyboardButton('Reject Index', callback_data=f'index#reject#{chat_id}#{message.id}#{message.from_user.id}'),
+    ]]
     reply_markup = InlineKeyboardMarkup(buttons)
-    await bot.send_message(LOG_CHANNEL,
-                           f'#IndexRequest\n\nBy : {message.from_user.mention} (<code>{message.from_user.id}</code>)\nChat ID/ Username - <code> {chat_id}</code>\nLast Message ID - <code>{last_msg_id}</code>\nInviteLink - {link}',
-                           reply_markup=reply_markup)
+    await bot.send_message(
+        LOG_CHANNEL,
+        f'#IndexRequest\n\nBy : {message.from_user.mention} (<code>{message.from_user.id}</code>)\nChat ID/ Username - <code> {chat_id}</code>\nLast Message ID - <code>{last_msg_id}</code>\nInviteLink - {link}',
+        reply_markup=reply_markup
+    )
     await message.reply('ThankYou For the Contribution, Wait For My Moderators to verify the files.')
 
 
