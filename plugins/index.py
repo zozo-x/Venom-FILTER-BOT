@@ -58,7 +58,7 @@ async def index_files(bot, query):
 @Client.on_message(filters.private & filters.command('index'))
 async def send_for_index(bot, message):
     vj = await bot.ask(message.chat.id, "**Now Send Me Your Channel Last Post Link Or Forward A Last Message From Your Index Channel.\n\nAnd You Can Set Skip Number By - /setskip yourskipnumber**")
-    if vj.forward_from_chat.type == enums.ChatType.CHANNEL:
+    if vj.forward_from_chat and vj.forward_from_chat.type == enums.ChatType.CHANNEL:
         last_msg_id = vj.forward_from_message_id
         chat_id = vj.forward_from_chat.username or vj.forward_from_chat.id
     elif vj.text:
