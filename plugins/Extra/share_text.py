@@ -6,6 +6,7 @@
 import os
 from pyrogram import Client, filters
 from urllib.parse import quote
+from info import CHNL_LNK
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 @Client.on_message(filters.command(["share_text", "share", "sharetext"]))
@@ -15,8 +16,8 @@ async def share_text(client, message):
         input_text = vj.text or vj.caption
     else:
         await vj.reply_text(
-            text=f"**Notice:**\n\n1. Send Any Text Messages.\n2. No Media Support\n\n**Any Question Join Support Chat**",               
-            reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("Updates Channel", url=f"https://t.me/vj_botz")]])
+            text=f"**Notice:**\n\n1. Send Any Text Messages.\n2. No Media Support\n\n**Join Update Channel**",               
+            reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("Updates Channel", url=CHNL_LNK)]])
             )                                                   
         return
     await vj.reply_text(
