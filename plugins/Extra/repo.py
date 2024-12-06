@@ -6,6 +6,7 @@
 import logging
 import os
 import requests
+from info import CHNL_LNK
 from pyrogram import Client, filters
 
 
@@ -35,7 +36,7 @@ async def git(bot, message):
 
 <b>Open Issues :</b> <i>{qw.get("open_issues")}</i>
 
-<b>Powered by :</b> @VJ_Botz
+<b>Powered by : {CHNL_LNK}</b>
 
 """
         if qw.get("description"):
