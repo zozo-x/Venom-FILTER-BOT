@@ -3,12 +3,10 @@ tgcrypto
 requests 
 bs4 
 shortzy 
-datetime 
 pytz 
 aiohttp
 yt-dlp
 youtube-dl
-requests
 ytthumb
 jinja2
 apscheduler
@@ -17,8 +15,7 @@ colorama
 NumPy 
 wheel 
 ujson 
-wget 
-pytz
+wget
 aiofiles
 hachoir
 python-decouple 
