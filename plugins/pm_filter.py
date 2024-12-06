@@ -2176,7 +2176,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
         )
         reply_markup = InlineKeyboardMarkup(buttons)
         await query.message.edit_text(
-            text=script.EXTRAMOD_TXT,
+            text=script.EXTRAMOD_TXT.format(OWNER_LNK, CHNL_LNK),
             reply_markup=reply_markup,
             parse_mode=enums.ParseMode.HTML
         )
@@ -2848,7 +2848,7 @@ async def advantage_spell_chok(client, name, msg, reply_msg, vj_search):
     SPELL_CHECK[mv_id] = movielist
     if AI_SPELL_CHECK == True and vj_search == True:
         vj_search_new = False
-        vj_ai_msg = await reply_msg.edit_text("<b><i>Advance Ai Try To Find Your Movie With Your Wrong Spelling.</i></b>")
+        vj_ai_msg = await reply_msg.edit_text("<b><i>I Am Trying To Find Your Movie With Your Wrong Spelling.</i></b>")
         movienamelist = []
         movienamelist += [movie.get('title') for movie in movies]
         for techvj in movienamelist:
