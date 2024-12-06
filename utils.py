@@ -614,35 +614,35 @@ async def send_all(bot, userid, files, ident, chat_id, user_name, query):
                     await bot.send_message(chat_id=userid, text=f"<b>Hᴇʏ ᴛʜᴇʀᴇ {user_name} 👋🏽 \n\n✅ Sᴇᴄᴜʀᴇ ʟɪɴᴋ ᴛᴏ ʏᴏᴜʀ ғɪʟᴇ ʜᴀs sᴜᴄᴄᴇssғᴜʟʟʏ ʙᴇᴇɴ ɢᴇɴᴇʀᴀᴛᴇᴅ ᴘʟᴇᴀsᴇ ᴄʟɪᴄᴋ ᴅᴏᴡɴʟᴏᴀᴅ ʙᴜᴛᴛᴏɴ\n\n🗃️ Fɪʟᴇ Nᴀᴍᴇ : {title}\n🔖 Fɪʟᴇ Sɪᴢᴇ : {size}</b>", reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("📤 Dᴏᴡɴʟᴏᴀᴅ 📥", url=await get_shortlink(chat_id, f"https://telegram.me/{temp.U_NAME}?start=files_{file['file_id']}"))]]))
         else:
             for file in files:
-                    f_caption = file["caption"]
-                    title = file["file_name"]
-                    size = get_size(file["file_size"])
-                    if CUSTOM_FILE_CAPTION:
-                        try:
-                            f_caption = CUSTOM_FILE_CAPTION.format(file_name='' if title is None else title,
-                                                                    file_size='' if size is None else size,
-                                                                    file_caption='' if f_caption is None else f_caption)
-                        except Exception as e:
-                            print(e)
-                            f_caption = f_caption
-                    if f_caption is None:
-                        f_caption = f"{title}"
-                    await bot.send_cached_media(
-                        chat_id=userid,
-                        file_id=file["file_id"],
-                        caption=f_caption,
-                        protect_content=True if ident == "filep" else False,
-                        reply_markup=InlineKeyboardMarkup(
-                            [
-                                [
-                                InlineKeyboardButton('Sᴜᴘᴘᴏʀᴛ Gʀᴏᴜᴘ', url=GRP_LNK),
-                                InlineKeyboardButton('Uᴘᴅᴀᴛᴇs Cʜᴀɴɴᴇʟ', url=CHNL_LNK)
-                            ],[
-                                InlineKeyboardButton("Bᴏᴛ Oᴡɴᴇʀ", url="t.me/kingvj01")
-                                ]
-                            ]
+                f_caption = file["caption"]
+                title = file["file_name"]
+                size = get_size(file["file_size"])
+                if CUSTOM_FILE_CAPTION:
+                    try:
+                        f_caption = CUSTOM_FILE_CAPTION.format(
+                            file_name='' if title is None else title,
+                            file_size='' if size is None else size,
+                            file_caption='' if f_caption is None else f_caption
                         )
+                    except Exception as e:
+                        print(e)
+                        f_caption = f_caption
+                if f_caption is None:
+                    f_caption = f"{title}"
+                await bot.send_cached_media(
+                    chat_id=userid,
+                    file_id=file["file_id"],
+                    caption=f_caption,
+                    protect_content=True if ident == "filep" else False,
+                    reply_markup=InlineKeyboardMarkup(
+                        [[
+                            InlineKeyboardButton('Sᴜᴘᴘᴏʀᴛ Gʀᴏᴜᴘ', url=GRP_LNK),
+                            InlineKeyboardButton('Uᴘᴅᴀᴛᴇs Cʜᴀɴɴᴇʟ', url=CHNL_LNK)
+                        ],[
+                            InlineKeyboardButton("Bᴏᴛ Oᴡɴᴇʀ", url=OWNER_LINK)
+                        ]]
                     )
+                )
     except UserIsBlocked:
         await query.answer('Uɴʙʟᴏᴄᴋ ᴛʜᴇ ʙᴏᴛ ᴍᴀʜɴ !', show_alert=True)
     except PeerIdInvalid:
