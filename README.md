@@ -31,11 +31,13 @@
 - [x] Token Verification & On / Off
 - [x] Send All Button 
 - [x] Custom Tutorial Button
-- [x] Bot Pm File Auto Delete 
+- [x] Bot Pm File Auto Delete
+
+- Note : You Can Turn On Or Off Every Feature, Just Use Which Feature You Want By Turning It On.
 
 Join My <a href='https://telegram.dog/vj_botz'>Update Channel</a> For More Update Regarding Repo.</b>
 
-### How To Deploy : [Video Tutorial](https://youtu.be/J5tiWdc_AWM)
+### How To Deploy : [Video Tutorial](https://youtu.be/3SJR7vH2kRo)
 
 ## Commands
 ```
