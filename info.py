@@ -92,6 +92,7 @@ GRP_LNK = environ.get('GRP_LNK', 'https://t.me/allmovies516')
 CHNL_LNK = environ.get('CHNL_LNK', 'https://t.me/allmoviess18')
 SUPPORT_CHAT = environ.get('SUPPORT_CHAT', 'allmoviessupport686') # Support Chat Link Without https:// or @
 OWNER_LNK = environ.get('OWNER_LNK', 'https://t.me/venom2747')
+SUPPORT_CHATS = environ.get('SUPPORT_CHATS', 'https://t.me/+FPA0_S5yfORhY2E1')
 
 # True Or False
 AI_SPELL_CHECK = bool(environ.get('AI_SPELL_CHECK', True))
