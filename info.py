@@ -115,7 +115,7 @@ USE_CAPTION_FILTER = bool(environ.get('USE_CAPTION_FILTER', True))
 VERIFY = bool(environ.get('VERIFY', False))
 VERIFY_SHORTLINK_URL = environ.get('VERIFY_SHORTLINK_URL', 'modijiurl.com')
 VERIFY_SHORTLINK_API = environ.get('VERIFY_SHORTLINK_API', 'd72a21ce05839e8af9519a05976bfe6982299e73')
-VERIFY_TUTORIAL = environ.get('VERIFY_TUTORIAL', 'https://t.me/howto_open_short_link/13')
+VERIFY_TUTORIAL = environ.get('VERIFY_TUTORIAL', 'https://t.me/newmoviesall10/6')
 
 # If You Fill Second Shortner Then Bot Attach Both First And Second Shortner And Use It For Verify.
 VERIFY_SECOND_SHORTNER = bool(environ.get('VERIFY_SECOND_SHORTNER', False))
