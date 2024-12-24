@@ -51,7 +51,7 @@ async def start(client, message):
             buttons = [[
                 InlineKeyboardButton('⤬ Aᴅᴅ Mᴇ Tᴏ Yᴏᴜʀ Gʀᴏᴜᴘ ⤬', url=f'http://t.me/{temp.U_NAME}?startgroup=true')
             ],[
-                InlineKeyboardButton('Support Group 💸', url=SUPPORT_CHAT"),
+                InlineKeyboardButton('Support Group 💸', url=SUPPORT_CHAT),
                 InlineKeyboardButton('⌬ Mᴏᴠɪᴇ Gʀᴏᴜᴘ', url=GRP_LNK)
             ],[
                 InlineKeyboardButton('〄 Hᴇʟᴘ', callback_data='help'),
@@ -65,7 +65,7 @@ async def start(client, message):
             buttons = [[
                 InlineKeyboardButton('⤬ Aᴅᴅ Mᴇ Tᴏ Yᴏᴜʀ Gʀᴏᴜᴘ ⤬', url=f'http://t.me/{temp.U_NAME}?startgroup=true')
             ],[
-                InlineKeyboardButton('Support Group 💸', url=SUPPORT_CHAT"),
+                InlineKeyboardButton('Support Group 💸', url=SUPPORT_CHAT),
                 InlineKeyboardButton('⌬ Mᴏᴠɪᴇ Gʀᴏᴜᴘ', url=GRP_LNK)
             ],[
                 InlineKeyboardButton('〄 Hᴇʟᴘ', callback_data='help'),
@@ -139,7 +139,7 @@ async def start(client, message):
             buttons = [[
                 InlineKeyboardButton('⤬ Aᴅᴅ Mᴇ Tᴏ Yᴏᴜʀ Gʀᴏᴜᴘ ⤬', url=f'http://t.me/{temp.U_NAME}?startgroup=true')
             ],[
-                InlineKeyboardButton('Support Group 💸', url=SUPPORT_CHAT"),
+                InlineKeyboardButton('Support Group 💸', url=SUPPORT_CHAT),
                 InlineKeyboardButton('⌬ Mᴏᴠɪᴇ Gʀᴏᴜᴘ', url=GRP_LNK)
             ],[
                 InlineKeyboardButton('〄 Hᴇʟᴘ', callback_data='help'),
@@ -194,7 +194,7 @@ async def start(client, message):
                 buttons = [[
                     InlineKeyboardButton('⤬ Aᴅᴅ Mᴇ Tᴏ Yᴏᴜʀ Gʀᴏᴜᴘ ⤬', url=f'http://t.me/{temp.U_NAME}?startgroup=true')
                 ],[
-                    InlineKeyboardButton('Support Group 💸', url=SUPPORT_CHAT"),
+                    InlineKeyboardButton('Support Group 💸', url=SUPPORT_CHAT),
                     InlineKeyboardButton('⌬ Mᴏᴠɪᴇ Gʀᴏᴜᴘ', url=GRP_LNK)
                 ],[
                     InlineKeyboardButton('〄 Hᴇʟᴘ', callback_data='help'),
@@ -208,7 +208,7 @@ async def start(client, message):
                 buttons = [[
                     InlineKeyboardButton('⤬ Aᴅᴅ Mᴇ Tᴏ Yᴏᴜʀ Gʀᴏᴜᴘ ⤬', url=f'http://t.me/{temp.U_NAME}?startgroup=true')
                 ],[
-                    InlineKeyboardButton('Support Group 💸', url=SUPPORT_CHAT"),
+                    InlineKeyboardButton('Support Group 💸', url=SUPPORT_CHAT),
                     InlineKeyboardButton('⌬ Mᴏᴠɪᴇ Gʀᴏᴜᴘ', url=GRP_LNK)
                 ],[
                     InlineKeyboardButton('〄 Hᴇʟᴘ', callback_data='help'),
